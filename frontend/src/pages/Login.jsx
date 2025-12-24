@@ -5,35 +5,41 @@ import { userLogin } from "../api/user.api.js";
 import { useState, useEffect } from "react";
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [error, setError] = useState(null)
+  const { user, setUser } = useAuth();
+  const navigate = useNavigate();
 
-    const {user, setUser} = useAuth()
-    const navigate = useNavigate()
+  useEffect(() => {
+    if (user) navigate("/");
+  }, [user, navigate]);
 
-    useEffect( () => {
-        if(user)
-            navigate("/")
-    },[user, navigate])
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError(null);
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        setError(null)
-
-        const data = {
-            email,
-            password
-        }
-        userLogin(data)
-         .then((res) => {
-            setUser(res.data)
-        })
-         .catch((err) => {
-            setError("Email or Password is incorrect.")
-         })
+    if (!email || !password) {
+      setError("Both the fields are required");
+      return;
     }
+    setLoading(true);
+
+    const data = {
+      email,
+      password,
+    };
+    userLogin(data)
+      .then((res) => {
+        setUser(res.data);
+      })
+      .catch((err) => {
+        setError("Email or Password is incorrect.");
+      })
+      .finally(() => setLoading(false));
+  };
 
   return (
     <div className="flex items-center justify-center bg-black h-170 w-full">
@@ -52,25 +58,29 @@ export default function Login() {
                 value={email}
                 type="email"
                 placeholder=" Email"
-                onChange={e => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 className=" text-xl text-white font-light bg-[#080808] rounded-lg mb-3"
               />
               <Input
                 value={password}
                 type="password"
                 placeholder=" Password"
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 className="text-xl text-white font-light bg-[#080808] rounded-lg mb-3"
               />
-              {error && <p className='text-red-500 font-light text-center'>{error}</p>}
+              {error && (
+                <p className="text-red-500 font-light text-center">{error}</p>
+              )}
               <div className="flex items-center justify-between">
                 <Button
                   type="submit"
-                  className=" rounded-lg hover:bg-red-700 h-10 w-20 mt-2 p-0"
+                  disabled={loading}
+                  className=" rounded-lg hover:bg-red-700 h-10 w-24 mt-2 p-0"
                 >
-                  Login
+                  {loading ? "Logging..." : "Log In"}
                 </Button>
                 <Button
+                  disabled={loading}
                   bgColor=""
                   textColor="text-[#CCCCCC]"
                   className="hover:text-red-600 mt-1"
