@@ -1,45 +1,61 @@
 import { Input, Button } from "../components/componentCollection.js";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
-import { userLogin } from "../api/user.api.js";
+import { userRegistration } from "../api/user.api.js";
 import { useState, useEffect } from "react";
 
-export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+export default function Signup() {
+  const [userRegistered, setUserRegistered] = useState(false);
+  const [fullName, setFullName] = useState("")
+  const [email, setEmail] = useState("")
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [avatar, setAvatar] = useState(null)
+  const [coverImage, setCoverImage] = useState(null)    
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(false)
 
-  const { user, setUser } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
+  if (user) {
+    setUserRegistered(true);
+  }
+
   useEffect(() => {
-    if (user) navigate("/");
-  }, [user, navigate]);
+    if (userRegistered) navigate("/login");
+  }, [userRegistered, setUserRegistered]);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    setError(null);
+    e.preventDefault()
 
-    if (!email || !password) {
-      setError("Both the fields are required");
-      return;
+    if (!fullName){
+        setError("Name is required.")
+        return;
     }
-    setLoading(true);
+    if (!email){
+        setError("Email is required.")
+        return;
+    }
+    if (!username){
+        setError("Username is required.")
+        return;
+    }
+    if (!password){
+        setError("Password is required.")
+        return;
+    }
 
-    const data = {
-      email,
-      password,
-    };
-    userLogin(data)
-      .then((res) => {
-        setUser(res.data);
-      })
-      .catch((err) => {
-        setError("Email or Password is incorrect.");
-      })
-      .finally(() => setLoading(false));
-  };
+    setLoading(true)
+    userRegistration({fullName, email, username, password})
+     .then( (res) => {
+        setUserRegistered(true)
+        console.log(res);
+    } )
+     .catch( (err) => setError(err) )
+     .finally( () => setLoading(false) )
+     
+  }
 
   return (
     <div className="flex items-center justify-center bg-black h-170 w-full">
@@ -48,17 +64,31 @@ export default function Login() {
         <div className="flex items-center justify-center w-1/2 p-4">
           <div>
             <h1 className="font-serif text-white text-3xl text-center">
-              Login Account
+              Create Account
             </h1>
             <p className="text-gray-300 text-md font-light text-center tracking-wide mt-2 mb-4">
               Enter your details
             </p>
             <form onSubmit={handleSubmit}>
               <Input
+                value={fullName}
+                type="text"
+                placeholder=" Full Name"
+                onChange={(e) => setFullName(e.target.value)}
+                className=" text-xl text-white font-light bg-[#080808] rounded-lg mb-3"
+              />
+              <Input
                 value={email}
                 type="email"
                 placeholder=" Email"
                 onChange={(e) => setEmail(e.target.value)}
+                className=" text-xl text-white font-light bg-[#080808] rounded-lg mb-3"
+              />
+              <Input
+                value={username}
+                type="text"
+                placeholder=" Username"
+                onChange={(e) => setUsername(e.target.value)}
                 className=" text-xl text-white font-light bg-[#080808] rounded-lg mb-3"
               />
               <Input
@@ -77,7 +107,7 @@ export default function Login() {
                   disabled={loading}
                   className=" rounded-lg hover:bg-red-700 h-10 w-24 mt-2 p-0"
                 >
-                  {loading ? "Logging..." : "Log In"}
+                  {loading ? "Creating..." : "Signup"}
                 </Button>
                 <Button
                   disabled={loading}
@@ -85,7 +115,7 @@ export default function Login() {
                   textColor="text-[#CCCCCC]"
                   className="hover:text-red-600 mt-1"
                 >
-                  Create Account
+                  Login
                 </Button>
               </div>
             </form>
@@ -93,5 +123,5 @@ export default function Login() {
         </div>
       </div>
     </div>
-  )
+  );
 }
