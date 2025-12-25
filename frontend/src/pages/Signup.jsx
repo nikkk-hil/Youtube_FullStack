@@ -2,9 +2,12 @@ import { Input, Button } from "../components/componentCollection.js";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import { userRegistration } from "../api/user.api.js";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+
 
 export default function Signup() {
+  const avatarInputRef = useRef(null)
+  const coverImageInputRef = useRef(null)
   const [userRegistered, setUserRegistered] = useState(false);
   const [fullName, setFullName] = useState("")
   const [email, setEmail] = useState("")
@@ -14,20 +17,30 @@ export default function Signup() {
   const [coverImage, setCoverImage] = useState(null)    
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [avatarLabel, setAvatarLabel] = useState("Choose a profile picture")
+  const [coverImageLabel, setCoverImageLabel] = useState("Choose a cover image")
+  const [avatarBrowsed, setAvatarBrowsed] = useState(false)
+  const [coverImageBrowsed, setCoverImageBrowsed] = useState(false)
 
   const { user } = useAuth();
   const navigate = useNavigate();
+  const formData = new FormData()
+
 
   if (user) {
     setUserRegistered(true);
   }
 
   useEffect(() => {
-    if (userRegistered) navigate("/login");
+    if (userRegistered){
+      navigate("/login");
+      console.log("User Registered");
+    }
   }, [userRegistered, setUserRegistered]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    setError(null)
 
     if (!fullName){
         setError("Name is required.")
@@ -45,16 +58,50 @@ export default function Signup() {
         setError("Password is required.")
         return;
     }
+    if (!avatar){
+      setError("Profile Picture is required.")
+      return
+    }
+    if (!coverImage){
+      setError("Cover Image is required.")
+      return
+    }
 
     setLoading(true)
-    userRegistration({fullName, email, username, password})
+    formData.append("fullName", fullName)
+    formData.append("email", email)
+    formData.append("username", username)
+    formData.append("password", password)
+    formData.append("avatar", avatar)
+    formData.append("coverImage", coverImage)
+
+    userRegistration(formData)
      .then( (res) => {
         setUserRegistered(true)
         console.log(res);
     } )
-     .catch( (err) => setError(err) )
+     .catch( (res, err) => {
+      if (res.status === 409)
+        setError("Username or Email already exists")
+      console.error(err);
+     } )
      .finally( () => setLoading(false) )
      
+  }
+
+  const handleFile = (e, fileType) => {
+    const file = e.target.files[0];
+
+    if (fileType === "avatar"){
+      setAvatar(file)
+      setAvatarLabel(file.name)
+      setAvatarBrowsed(true)
+    }
+    else{
+      setCoverImage(file)
+      setCoverImageLabel(file.name)
+      setCoverImageBrowsed(true)
+    }
   }
 
   return (
@@ -75,7 +122,7 @@ export default function Signup() {
                 type="text"
                 placeholder=" Full Name"
                 onChange={(e) => setFullName(e.target.value)}
-                className=" text-xl text-white font-light bg-[#080808] rounded-lg mb-3"
+                className="text-xl text-white font-light bg-[#080808] rounded-lg mb-3"
               />
               <Input
                 value={email}
@@ -98,10 +145,50 @@ export default function Signup() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="text-xl text-white font-light bg-[#080808] rounded-lg mb-3"
               />
+              <div className="flex justify-between border-1 rounded-xl text-gray-400 mb-2">
+                <Input
+                  label={avatarBrowsed ? `${avatarLabel} ✓` : avatarLabel}
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  disabled={loading}
+                  ref={avatarInputRef}
+                  onChange={ (e) => handleFile(e, "avatar") }
+                  labelClass={avatarBrowsed ? `text-green-400 font-light text-sm m-2` :`text-white font-light text-sm m-2`}
+                />
+                <Button 
+                  onClick={() => avatarInputRef.current.click()}
+                  disabled={loading}
+                  bgColor={loading ? `bg-gray-600` : `bg-red-600`}
+                  className={`text-xs rounded-xl`}  
+                >
+                  Browse
+                </Button>
+              </div>
+              <div className="flex justify-between border-1 rounded-xl text-gray-400">
+                <Input
+                  label={coverImageBrowsed ? `${coverImageLabel} ✓`: coverImageLabel}
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  disabled={loading}
+                  ref={coverImageInputRef}
+                  onChange={ (e) => handleFile(e, "cover-image") }
+                  labelClass={coverImageBrowsed ? `text-green-400 font-light text-sm m-2` :`text-white font-light text-sm m-2`}
+                />
+                <Button 
+                  onClick={() => coverImageInputRef.current.click()} 
+                  disabled={loading}
+                  bgColor={loading ? `bg-gray-600` : `bg-red-600`}
+                  className="text-xs rounded-xl"  
+                >
+                  Browse
+                </Button>
+              </div>
               {error && (
                 <p className="text-red-500 font-light text-center">{error}</p>
               )}
-              <div className="flex items-center justify-between">
+              <div className="flex justify-center mt-4">
                 <Button
                   type="submit"
                   disabled={loading}
