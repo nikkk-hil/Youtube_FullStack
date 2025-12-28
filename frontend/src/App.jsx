@@ -1,16 +1,23 @@
-import { useEffect } from 'react'
 import './index.css'
-import { getUser, getUserChannelProfile, userLogin, userLogout } from './api/user.api.js'
-import Header from './components/Header.jsx'
-import {Login, Signup} from './pages/pageCollection.js'
+import {Login, Signup, Home} from './pages/pageCollection.js'
+import { Routes, Route } from 'react-router-dom'
+import ProtectedRoute from './utils/ProtectedRoute.jsx'
 
 function App() {
 
   return (
-    <>
-      <Header />
-      <Signup />
-    </>
+    <Routes>
+
+      {/* Public Routes */}
+      <Route path='/login' element={<Login />} />
+      <Route path='/signup' element={<Signup />} />
+
+      {/* Protected Routes */}
+      <Route element={<ProtectedRoute />}>
+        <Route path='/' element={<Home />} />
+      </Route>
+
+    </Routes>
   )
 }
 

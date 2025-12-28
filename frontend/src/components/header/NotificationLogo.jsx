@@ -1,4 +1,4 @@
-import NLogo from "../assets/notification-logo.svg?react"
+import NLogo from "../../assets/notification-logo.svg?react"
 import React from 'react'
 
 export default function NotificationLogo() {

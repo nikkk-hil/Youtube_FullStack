@@ -84,6 +84,7 @@ export default function LoginComponent() {
                   bgColor=""
                   textColor="text-[#CCCCCC]"
                   className="hover:text-red-600 mt-1"
+                  onClick={() => navigate("/signup")}
                 >
                   Create Account
                 </Button>

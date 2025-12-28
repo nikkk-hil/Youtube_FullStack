@@ -1,4 +1,4 @@
-import MenuLogo from "../assets/menu-logo.svg"
+import MenuLogo from "../../assets/menu-logo.svg"
 import React from 'react'
 
 export default function Menucard({ className }) {

@@ -1,5 +1,5 @@
 import React from 'react'
-import Logo from '../assets/youtube-logo.png'
+import Logo from '../../assets/youtube-logo.png'
 
 export default function YouTube() {
   return (

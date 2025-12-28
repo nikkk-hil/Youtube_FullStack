@@ -9,6 +9,8 @@ import Input from "./Input.jsx"
 import Button from "./Button.jsx";
 import LoginComponent from "./login/LoginComponent.jsx";
 import SignupComponent from "./signup/SignupComponent.jsx";
+import HomeComponent from "./home/HomeComponent.jsx";
+import Logout from "./header/Logout.jsx";
 
 export {
     Header,
@@ -21,5 +23,7 @@ export {
     Input,
     Button,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    HomeComponent,
+    Logout
 }

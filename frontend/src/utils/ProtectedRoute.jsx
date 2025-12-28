@@ -1,14 +1,10 @@
 import { useAuth } from "../context/AuthContext.jsx";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 
 
 
 function ProtectedRoute( ) {
   const {user, loading} = useAuth()
-  const navigate = useNavigate()
-
-  if(!user)
-    navigate("/login")
 
   if (loading){
     return(
@@ -19,6 +15,9 @@ function ProtectedRoute( ) {
       </div>
     )
   }
+
+  if(!user)
+    return <Navigate to='/login' replace/> //replaces history ex. w/o replace - home -> login but with replace home replaces to login in history preventing infinite loop
   
   return (
     <Outlet />
