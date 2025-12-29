@@ -1,5 +1,5 @@
 import { Input, Button } from "../componentCollection.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { userLogin } from "../../api/user.api.js";
 import { useState, useEffect } from "react";
@@ -33,7 +33,7 @@ export default function LoginComponent() {
     };
     userLogin(data)
       .then((res) => {
-        setUser(res.data);
+        setUser(res.data.data.user);
       })
       .catch((err) => {
         setError("Email or Password is incorrect.");
@@ -79,15 +79,16 @@ export default function LoginComponent() {
                 >
                   {loading ? "Logging..." : "Log In"}
                 </Button>
-                <Button
-                  disabled={loading}
-                  bgColor=""
-                  textColor="text-[#CCCCCC]"
-                  className="hover:text-red-600 mt-1"
-                  onClick={() => navigate("/signup")}
-                >
-                  Create Account
-                </Button>
+                <Link to="/signup">
+                  <Button
+                    disabled={loading}
+                    bgColor=""
+                    textColor="text-[#CCCCCC]"
+                    className="hover:text-red-600 mt-1"
+                  >
+                    Create Account
+                  </Button>
+                </Link>
               </div>
             </form>
           </div>

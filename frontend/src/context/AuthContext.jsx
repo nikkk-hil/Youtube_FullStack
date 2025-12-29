@@ -30,7 +30,7 @@ const AuthProvider = function( {children} ){
 
     useEffect( () => {
         getUser()
-         .then( (res) => setUser(res.data) ) //200
+         .then( (res) => setUser(res.data.data) ) //200
          .catch( (err) => setUser(null) )  //401
          .finally( () => setLoading(false) )
     },[])

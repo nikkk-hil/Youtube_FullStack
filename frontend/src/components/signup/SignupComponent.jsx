@@ -1,107 +1,102 @@
 import { Input, Button } from "../componentCollection.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { userRegistration } from "../../api/user.api.js";
 import { useState, useEffect, useRef } from "react";
 
-
 export default function SignupComponent() {
-  const avatarInputRef = useRef(null)
-  const coverImageInputRef = useRef(null)
+  const avatarInputRef = useRef(null);
+  const coverImageInputRef = useRef(null);
   const [userRegistered, setUserRegistered] = useState(false);
-  const [fullName, setFullName] = useState("")
-  const [email, setEmail] = useState("")
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [avatar, setAvatar] = useState(null)
-  const [coverImage, setCoverImage] = useState(null)    
-  const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [avatarLabel, setAvatarLabel] = useState("Choose a profile picture")
-  const [coverImageLabel, setCoverImageLabel] = useState("Choose a cover image")
-  const [avatarBrowsed, setAvatarBrowsed] = useState(false)
-  const [coverImageBrowsed, setCoverImageBrowsed] = useState(false)
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [avatar, setAvatar] = useState(null);
+  const [coverImage, setCoverImage] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [avatarLabel, setAvatarLabel] = useState("Choose a profile picture");
+  const [coverImageLabel, setCoverImageLabel] = useState(
+    "Choose a cover image"
+  );
+  const [avatarBrowsed, setAvatarBrowsed] = useState(false);
+  const [coverImageBrowsed, setCoverImageBrowsed] = useState(false);
 
   const { user } = useAuth();
   const navigate = useNavigate();
-  const formData = new FormData()
-
-
-
+  const formData = new FormData();
 
   useEffect(() => {
-    if (user){
-      setUserRegistered(true)
+    if (user) {
+      setUserRegistered(true);
       navigate("/login");
       console.log("User Registered");
     }
   }, [user, userRegistered, setUserRegistered]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError(null)
+    e.preventDefault();
+    setError(null);
 
-    if (!fullName){
-        setError("Name is required.")
-        return;
+    if (!fullName) {
+      setError("Name is required.");
+      return;
     }
-    if (!email){
-        setError("Email is required.")
-        return;
+    if (!email) {
+      setError("Email is required.");
+      return;
     }
-    if (!username){
-        setError("Username is required.")
-        return;
+    if (!username) {
+      setError("Username is required.");
+      return;
     }
-    if (!password){
-        setError("Password is required.")
-        return;
+    if (!password) {
+      setError("Password is required.");
+      return;
     }
-    if (!avatar){
-      setError("Profile Picture is required.")
-      return
+    if (!avatar) {
+      setError("Profile Picture is required.");
+      return;
     }
-    if (!coverImage){
-      setError("Cover Image is required.")
-      return
+    if (!coverImage) {
+      setError("Cover Image is required.");
+      return;
     }
 
-    setLoading(true)
-    formData.append("fullName", fullName)
-    formData.append("email", email)
-    formData.append("username", username)
-    formData.append("password", password)
-    formData.append("avatar", avatar)
-    formData.append("coverImage", coverImage)
+    setLoading(true);
+    formData.append("fullName", fullName);
+    formData.append("email", email);
+    formData.append("username", username);
+    formData.append("password", password);
+    formData.append("avatar", avatar);
+    formData.append("coverImage", coverImage);
 
     userRegistration(formData)
-     .then( (res) => {
-        setUserRegistered(true)
+      .then((res) => {
+        setUserRegistered(true);
         console.log(res);
-    } )
-     .catch( (res, err) => {
-      if (res.status === 409)
-        setError("Username or Email already exists")
-      console.error(err);
-     } )
-     .finally( () => setLoading(false) )
-     
-  }
+      })
+      .catch((res, err) => {
+        if (res.status === 409) setError("Username or Email already exists");
+        console.error(err);
+      })
+      .finally(() => setLoading(false));
+  };
 
   const handleFile = (e, fileType) => {
     const file = e.target.files[0];
 
-    if (fileType === "avatar"){
-      setAvatar(file)
-      setAvatarLabel(file.name)
-      setAvatarBrowsed(true)
+    if (fileType === "avatar") {
+      setAvatar(file);
+      setAvatarLabel(file.name);
+      setAvatarBrowsed(true);
+    } else {
+      setCoverImage(file);
+      setCoverImageLabel(file.name);
+      setCoverImageBrowsed(true);
     }
-    else{
-      setCoverImage(file)
-      setCoverImageLabel(file.name)
-      setCoverImageBrowsed(true)
-    }
-  }
+  };
 
   return (
     <div className="flex items-center justify-center bg-black h-170 w-full">
@@ -152,34 +147,44 @@ export default function SignupComponent() {
                   hidden
                   disabled={loading}
                   ref={avatarInputRef}
-                  onChange={ (e) => handleFile(e, "avatar") }
-                  labelClass={avatarBrowsed ? `text-green-400 font-light text-sm m-2` :`text-white font-light text-sm m-2`}
+                  onChange={(e) => handleFile(e, "avatar")}
+                  labelClass={
+                    avatarBrowsed
+                      ? `text-green-400 font-light text-sm m-2`
+                      : `text-white font-light text-sm m-2`
+                  }
                 />
-                <Button 
+                <Button
                   onClick={() => avatarInputRef.current.click()}
                   disabled={loading}
                   bgColor={loading ? `bg-gray-600` : `bg-red-600`}
-                  className={`text-xs rounded-xl`}  
+                  className={`text-xs rounded-xl`}
                 >
                   Browse
                 </Button>
               </div>
               <div className="flex justify-between border-1 rounded-xl text-gray-400">
                 <Input
-                  label={coverImageBrowsed ? `${coverImageLabel} ✓`: coverImageLabel}
+                  label={
+                    coverImageBrowsed ? `${coverImageLabel} ✓` : coverImageLabel
+                  }
                   type="file"
                   accept="image/*"
                   hidden
                   disabled={loading}
                   ref={coverImageInputRef}
-                  onChange={ (e) => handleFile(e, "cover-image") }
-                  labelClass={coverImageBrowsed ? `text-green-400 font-light text-sm m-2` :`text-white font-light text-sm m-2`}
+                  onChange={(e) => handleFile(e, "cover-image")}
+                  labelClass={
+                    coverImageBrowsed
+                      ? `text-green-400 font-light text-sm m-2`
+                      : `text-white font-light text-sm m-2`
+                  }
                 />
-                <Button 
-                  onClick={() => coverImageInputRef.current.click()} 
+                <Button
+                  onClick={() => coverImageInputRef.current.click()}
                   disabled={loading}
                   bgColor={loading ? `bg-gray-600` : `bg-red-600`}
-                  className="text-xs rounded-xl"  
+                  className="text-xs rounded-xl"
                 >
                   Browse
                 </Button>
@@ -195,15 +200,16 @@ export default function SignupComponent() {
                 >
                   {loading ? "Creating..." : "Signup"}
                 </Button>
-                <Button
-                  disabled={loading}
-                  bgColor=""
-                  textColor="text-[#CCCCCC]"
-                  className="hover:text-red-600 mt-1"
-                  onClick={() => navigate("/login")}
-                >
-                  Login
-                </Button>
+                <Link to='/login'>
+                  <Button
+                    disabled={loading}
+                    bgColor=""
+                    textColor="text-[#CCCCCC]"
+                    className="hover:text-red-600 mt-1"
+                  >
+                    Login
+                  </Button>
+                </Link>
               </div>
             </form>
           </div>
