@@ -1,5 +1,5 @@
 import './index.css'
-import {Login, Signup, Home} from './pages/pageCollection.js'
+import {Login, Signup, Home, Upload} from './pages/pageCollection.js'
 import { Routes, Route } from 'react-router-dom'
 import ProtectedRoute from './utils/ProtectedRoute.jsx'
 
@@ -15,6 +15,7 @@ function App() {
       {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>
         <Route path='/' element={<Home />} />
+        <Route path='/upload' element={<Upload />} />
       </Route>
 
     </Routes>

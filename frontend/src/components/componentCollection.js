@@ -11,6 +11,8 @@ import LoginComponent from "./login/LoginComponent.jsx";
 import SignupComponent from "./signup/SignupComponent.jsx";
 import HomeComponent from "./home/HomeComponent.jsx";
 import Logout from "./header/Logout.jsx";
+import UploadComponent from "./upload/UploadComponent.jsx";
+
 
 export {
     Header,
@@ -25,5 +27,6 @@ export {
     LoginComponent,
     SignupComponent,
     HomeComponent,
-    Logout
+    Logout,
+    UploadComponent
 }
