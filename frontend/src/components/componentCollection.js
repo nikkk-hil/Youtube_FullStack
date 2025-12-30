@@ -12,7 +12,8 @@ import SignupComponent from "./signup/SignupComponent.jsx";
 import HomeComponent from "./home/HomeComponent.jsx";
 import Logout from "./header/Logout.jsx";
 import UploadComponent from "./upload/UploadComponent.jsx";
-
+import VideoCard from "./VideoCard.jsx";
+import WatchVideoComponent from "./watchVideo/WatchVideoComponent.jsx";
 
 export {
     Header,
@@ -28,5 +29,7 @@ export {
     SignupComponent,
     HomeComponent,
     Logout,
-    UploadComponent
+    UploadComponent,
+    VideoCard,
+    WatchVideoComponent
 }
