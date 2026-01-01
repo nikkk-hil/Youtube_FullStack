@@ -14,6 +14,7 @@ import Logout from "./header/Logout.jsx";
 import UploadComponent from "./upload/UploadComponent.jsx";
 import VideoCard from "./VideoCard.jsx";
 import WatchVideoComponent from "./watchVideo/WatchVideoComponent.jsx";
+import VideoPlayer from "./VideoPlayer.jsx";
 
 export {
     Header,
@@ -31,5 +32,6 @@ export {
     Logout,
     UploadComponent,
     VideoCard,
-    WatchVideoComponent
+    WatchVideoComponent,
+    VideoPlayer
 }

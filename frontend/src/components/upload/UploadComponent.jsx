@@ -1,6 +1,7 @@
 import { Input, Button } from "../componentCollection.js";
 import { useState, useRef } from "react";
 import { publishVideo } from "../../api/video.api.js";
+import { useNavigate } from "react-router-dom";
 
 /*
     
@@ -15,6 +16,7 @@ function UploadComponent() {
   const [thumbnail, setThumbnail] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -46,7 +48,7 @@ function UploadComponent() {
     formData.append("thumbnail", thumbnail);
 
     publishVideo(formData)
-      .then((res) => console.log(res.data))
+      .then(() => navigate("/"))
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   };

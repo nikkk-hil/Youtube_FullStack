@@ -6,6 +6,7 @@ const getVideoById = (videoId) => api.get(`/video/get-video/${videoId}`);
 const updateVideo = (videoId, data) => api.patch(`/video/update-video/${videoId}`, data);
 const deleteVideo = (videoId) => api.get(`/video/delete-video/${videoId}`);
 const togglePublishStatus = (videoId) => api.get(`/video/toggle-publish-status/${videoId}`);
+const incrementView = (videoId) => api.post(`/video/update-views/${videoId}`)
 
 export {
     publishVideo,
@@ -13,5 +14,6 @@ export {
     updateVideo,
     deleteVideo,
     togglePublishStatus,
-    getAllVideos
+    getAllVideos,
+    incrementView
 }

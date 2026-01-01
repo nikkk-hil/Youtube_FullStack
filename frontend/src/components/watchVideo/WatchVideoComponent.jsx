@@ -1,25 +1,45 @@
-import { useParams } from 'react-router-dom'
-import { useState,useEffect } from 'react'
-import { getVideoById } from '../../api/video.api'
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getVideoById, incrementView } from "../../api/video.api";
+import { VideoPlayer } from "../componentCollection.js"
 
 function WatchVideoComponent() {
-  const videoId = useParams()
-  const [videoFile, setVideoFile] = useState(null)
+  const videoId = useParams();
+  const [videoFile, setVideoFile] = useState(null);
+  const [loading, setLoading] = useState(true)
+  const [viewed, setViewed] = useState(false)
 
-  useEffect( () => {
+  const handleView = () => {
+    if (!viewed){
+      incrementView(videoId)
+        .then( (res) => console.log(res.data.data))
+        .catch( (err) => console.error(err) )
+        .finally( () => setViewed(true) )
+    }
+  }
+
+  useEffect(() => {
     getVideoById(videoId.videoId)
-      .then((res) => setVideoFile(res.data.data.videoFile))
+      .then((res) => {
+        setVideoFile(res.data.data.videoFile);
+        console.log(videoFile);
+      })
       .catch((err) => console.error(err))
-  })
+      .finally( () => setLoading(false) )
+  });
+
+  if (loading)
+    return(
+      <div>
+        LOADING...
+      </div>
+    )
 
   return (
     <div>
-<video width="320" height="240" controls>
-  <source src={videoFile} type="video/mp4" />
-Your browser does not support the video tag.
-</video>
+      <VideoPlayer onPlay={handleView} videoSrc={videoFile} />
     </div>
-  )
+  );
 }
 
-export default WatchVideoComponent
+export default WatchVideoComponent;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getAgoTime, getVideoDuration } from '../utils/getAgoTime'
+import { getAgoTime, getVideoDuration } from '../utils/time'
 import { Link } from 'react-router-dom'
 
 function VideoCard({ video }) {

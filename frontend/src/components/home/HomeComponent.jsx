@@ -23,7 +23,7 @@ function HomeComponent() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div>Loading</div>;
+  if (loading) return <div className="h-screen text-white text-4xl text-center">Loading</div>;
   else
     return (
       <div className="grid grid-cols-3 gap-2 h-full text-white">
