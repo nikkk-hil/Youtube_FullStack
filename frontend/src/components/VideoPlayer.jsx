@@ -12,6 +12,7 @@ function VideoPlayer({
         preload='metadata'
         crossOrigin='anonymous'
         className='rounded-lg'
+        {...props}
     />
   )
 }

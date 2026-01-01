@@ -33,7 +33,7 @@ function VideoCard({ video }) {
                     {video.owner.username}
                 </div>
                 <div>
-                   {`${video.views} ~ ${timeAgo}`}
+                   {`${video.views} ${video.views > 1 ? "views" : "view"}   |  ${timeAgo}`}
                 </div>
             </div>
             </div>

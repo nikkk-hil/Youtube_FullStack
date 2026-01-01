@@ -10,8 +10,9 @@ function WatchVideoComponent() {
   const [viewed, setViewed] = useState(false)
 
   const handleView = () => {
+    console.log("Video Played")
     if (!viewed){
-      incrementView(videoId)
+      incrementView(videoId.videoId)
         .then( (res) => console.log(res.data.data))
         .catch( (err) => console.error(err) )
         .finally( () => setViewed(true) )
