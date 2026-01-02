@@ -14,10 +14,10 @@ function VideoCard({ video }) {
     }, [])
 
   return (
-    <div className='w-112 hover:bg-gray-800 p-2'>
+    <div className='w-112 h-96 hover:bg-gray-800 p-4 rounded-xl'>
         <Link to={`/watch/${video._id}`}>
-            <div>
-                <img src={`${video.thumbnail}`} alt="thumbnail" />
+            <div className='h-64 mb-2'>
+                <img src={`${video.thumbnail}`} alt="thumbnail" className='w-full h-full object-cover'/>
             </div>
         </Link>
         <div className='flex justify-between'>
@@ -26,7 +26,7 @@ function VideoCard({ video }) {
                 <img src={`${video.owner.avatar}`} alt="channel profile picture"  className='h-12 rounded-full'/>
             </div>
             <div>
-                <div>
+                <div className='font-semibold text-lg'>
                     {video.title}
                 </div>
                 <div>
