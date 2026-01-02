@@ -2,25 +2,28 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getVideoById, incrementView } from "../../api/video.api";
 import { VideoPlayer, Button } from "../componentCollection.js";
-import { getChannelSubscribers, toggleSubscription } from "../../api/subscription.api.js";
+import {
+  getChannelSubscribers,
+  toggleSubscription,
+} from "../../api/subscription.api.js";
 import { toggleVideoLike } from "../../api/like.api.js";
 
 function WatchVideoComponent() {
-  const videoId = useParams();
+  const { videoId } = useParams();
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [viewed, setViewed] = useState(false);
-  const [isSubscribed, setIsSubscribed] = useState(null)
-  const [subscribing, setSubscribing] = useState(false)
-  const [likes, setLikes] = useState(null)
-  const [isLiked, setIsLiked] = useState(null)
-  const [loadingLike, setLoadingLike] = useState(false)
-
+  const [isSubscribed, setIsSubscribed] = useState(null);
+  const [subscribing, setSubscribing] = useState(false);
+  const [likes, setLikes] = useState(null);
+  const [isLiked, setIsLiked] = useState(null);
+  const [loadingLike, setLoadingLike] = useState(false);
+  const [subscribers, setSubscribers] = useState(null);
 
   const handleView = () => {
     console.log("Video Played");
     if (!viewed) {
-      incrementView(videoId.videoId)
+      incrementView(videoId)
         .then((res) => {})
         .catch((err) => console.error(err))
         .finally(() => setViewed(true));
@@ -28,42 +31,46 @@ function WatchVideoComponent() {
   };
 
   const handleSubscribeButton = () => {
-    setSubscribing(true)
+    setSubscribing(true);
     toggleSubscription(video.owner._id)
-      .then(() => setIsSubscribed(!isSubscribed))
-      .catch((err) => console.error(err))
-      .finally( () => setSubscribing(false))
-  }
-
-  const handleLikeButton = () => {
-    setLoadingLike(true)
-    toggleVideoLike(videoId.videoId)
       .then(() => {
-        setIsLiked(!isLiked)
-        if(isLiked)
-          setLikes(likes-1)
-        else
-          setLikes(likes+1)
+        setIsSubscribed((prev) => !prev);
+        setSubscribers((prev) => (isSubscribed ? prev - 1 : prev + 1));
       })
       .catch((err) => console.error(err))
-      .finally(() => setLoadingLike(false))
+      .finally(() => setSubscribing(false));
+  };
 
-  }
+  const handleLikeButton = () => {
+    setLoadingLike(true);
+    toggleVideoLike(videoId)
+      .then(() => {
+        setIsLiked((prev) => !prev);
+        setLikes((prev) => prev + (isLiked ? -1 : 1));
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setLoadingLike(false));
+  };
 
   useEffect(() => {
-    getVideoById(videoId.videoId)
+    getVideoById(videoId)
       .then((res) => {
         console.log(res.data.data);
         setVideo(res.data.data.video);
-        setIsSubscribed(res.data.data.isSubscribed)
-        setLikes(parseInt(res.data.data.likes))
-        setIsLiked(res.data.data.isLiked)
+        setIsSubscribed(res.data.data.isSubscribed);
+        setLikes(parseInt(res.data.data.likes));
+        setIsLiked(res.data.data.isLiked);
+        getChannelSubscribers(res.data.data.video.owner._id)
+          .then((res) => setSubscribers(res.data.data.subscribersCount))
+          .catch((err) => console.error(err));
       })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
-    
+  }, [videoId]);
 
-  }, []);
+  // useEffect( () => {
+
+  // },[video])
 
   if (loading)
     return (
@@ -93,7 +100,7 @@ function WatchVideoComponent() {
               </div>
               <div className="w-28">
                 <div>{video.owner.username}</div>
-                <div className="text-xs text-gray-300">subscribers</div>
+                <div className="text-xs text-gray-300">{`${subscribers} subscribers`}</div>
               </div>
               <div>
                 <Button
@@ -112,7 +119,9 @@ function WatchVideoComponent() {
                 <Button
                   bgColor="bg-gray-800"
                   textColor=""
-                  className={`font-semibold rounded-full active:bg-gray-200 ${isLiked ? "text-blue-500" : "text-white"}`}
+                  className={`font-semibold rounded-full active:bg-gray-200 ${
+                    isLiked ? "text-blue-500" : "text-white"
+                  }`}
                   onClick={handleLikeButton}
                   disabled={loadingLike}
                 >
