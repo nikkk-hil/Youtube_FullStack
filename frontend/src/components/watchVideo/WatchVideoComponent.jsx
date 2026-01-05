@@ -1,12 +1,13 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getVideoById, incrementView } from "../../api/video.api";
-import { VideoPlayer, Button } from "../componentCollection.js";
+import { VideoPlayer, Button, Input } from "../componentCollection.js";
 import {
   getChannelSubscribers,
   toggleSubscription,
 } from "../../api/subscription.api.js";
 import { toggleVideoLike } from "../../api/like.api.js";
+import { getVideoComments, addComment } from "../../api/comment.api.js";
 
 function WatchVideoComponent() {
   const { videoId } = useParams();
@@ -19,6 +20,29 @@ function WatchVideoComponent() {
   const [isLiked, setIsLiked] = useState(null);
   const [loadingLike, setLoadingLike] = useState(false);
   const [subscribers, setSubscribers] = useState(null);
+  const [uploadedAt, setUploadedAt] = useState("");
+  const [comment, setComment] = useState("");
+  const [error, setError] = useState("");
+  const [commenting, setCommenting] = useState(false);
+  const [allComments, setAllComments] = useState(null);
+
+  const handleComment = (e) => {
+    e.preventDefault();
+
+    if (comment.trim() === "") {
+      setError("Comment is empty.");
+      return;
+    }
+    const commentData = {
+      content: comment,
+    };
+
+    setCommenting(true);
+    addComment(videoId, commentData)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.error(err))
+      .finally(() => setCommenting(false));
+  };
 
   const handleView = () => {
     console.log("Video Played");
@@ -60,6 +84,14 @@ function WatchVideoComponent() {
         setIsSubscribed(res.data.data.isSubscribed);
         setLikes(parseInt(res.data.data.likes));
         setIsLiked(res.data.data.isLiked);
+        const date = new Date(res.data.data.video.createdAt);
+        const formattedDate = date.toLocaleString("en-IN", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        });
+        setUploadedAt(formattedDate);
+
         getChannelSubscribers(res.data.data.video.owner._id)
           .then((res) => setSubscribers(res.data.data.subscribersCount))
           .catch((err) => console.error(err));
@@ -68,9 +100,14 @@ function WatchVideoComponent() {
       .finally(() => setLoading(false));
   }, [videoId]);
 
-  // useEffect( () => {
-
-  // },[video])
+  useEffect(() => {
+    getVideoComments(videoId)
+      .then((res) => {
+        setAllComments(res.data.data);
+        console.log(res.data.data);
+      })
+      .catch((err) => console.error(err));
+  }, [videoId, comment, setComment]);
 
   if (loading)
     return (
@@ -89,7 +126,7 @@ function WatchVideoComponent() {
           <div className="text-white font-semibold text-2xl mb-2">
             {video.title}
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between mb-4">
             <div className="flex gap-2 text-white">
               <div>
                 <img
@@ -138,6 +175,48 @@ function WatchVideoComponent() {
                 </Button>
               </div>
             </div>
+          </div>
+          <div className="bg-gray-900 rounded-md mb-4">
+            <div className="flex pt-1">
+              <div className="text-gray-200 p-1 text-sm">
+                {video.views} views
+              </div>
+              <div className="text-gray-200 p-1 text-sm">|</div>
+              <div className="text-gray-200 p-1 text-sm"> {uploadedAt}</div>
+            </div>
+            <div>
+              <h1 className="text-white text-2xl p-1">Description</h1>
+              <p className="text-white text-sm p-1 pl-2">{video.description}</p>
+            </div>
+          </div>
+          <div className="bg-gray-900 rounded-md mb-4">
+            <div className="text-2xl text-gray-200 mb-3">Comments</div>
+            <div>
+              <form className="flex" onSubmit={(e) => handleComment(e)}>
+                <Input
+                  value={comment}
+                  placeholder="Add a comment"
+                  onChange={(e) => setComment(e.target.value)}
+                  className="text-white"
+                />
+                <Button
+                  type="submit"
+                  className="active:bg-red-700 rounded-full"
+                  disabled={commenting}
+                >
+                  Comment
+                </Button>
+              </form>
+            </div>
+          </div>
+          <div>
+            {allComments.map( (comment) => {
+              return(
+                <div>
+                  {comment.content}
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>
