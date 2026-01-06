@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getVideoById, incrementView } from "../../api/video.api";
-import { VideoPlayer, Button, Input } from "../componentCollection.js";
+import { VideoPlayer, Button, Input, Comment } from "../componentCollection.js";
 import {
   getChannelSubscribers,
   toggleSubscription,
@@ -212,9 +212,7 @@ function WatchVideoComponent() {
           <div>
             {allComments.map( (comment) => {
               return(
-                <div>
-                  {comment.content}
-                </div>
+                <Comment key={comment._id} comment={comment} />
               )
             })}
           </div>

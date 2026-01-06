@@ -15,6 +15,7 @@ import UploadComponent from "./upload/UploadComponent.jsx";
 import VideoCard from "./VideoCard.jsx";
 import WatchVideoComponent from "./watchVideo/WatchVideoComponent.jsx";
 import VideoPlayer from "./VideoPlayer.jsx";
+import Comment from "./watchVideo/Comment.jsx";
 
 export {
     Header,
@@ -33,5 +34,6 @@ export {
     UploadComponent,
     VideoCard,
     WatchVideoComponent,
-    VideoPlayer
+    VideoPlayer,
+    Comment
 }
