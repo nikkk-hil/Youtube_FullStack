@@ -190,8 +190,8 @@ function WatchVideoComponent() {
             </div>
           </div>
           <div className="bg-gray-900 rounded-md mb-4">
-            <div className="text-2xl text-gray-200 mb-3">Comments</div>
-            <div>
+            <div className="text-2xl text-gray-200 mb-3 p-2">Comments</div>
+            <div className="p-2"> 
               <form className="flex" onSubmit={(e) => handleComment(e)}>
                 <Input
                   value={comment}
@@ -208,13 +208,11 @@ function WatchVideoComponent() {
                 </Button>
               </form>
             </div>
-          </div>
-          <div>
-            {allComments.map( (comment) => {
-              return(
-                <Comment key={comment._id} comment={comment} />
-              )
-            })}
+            <div>
+              {allComments.map((comment) => {
+                return <Comment key={comment._id} comment={comment} />;
+              })}
+            </div>
           </div>
         </div>
       </div>
