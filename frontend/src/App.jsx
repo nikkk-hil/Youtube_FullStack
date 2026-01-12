@@ -1,8 +1,8 @@
 import './index.css'
-import {Login, Signup, Home, Upload} from './pages/pageCollection.js'
+import {Login, Signup, Home, Upload, WatchVideo, ChoosePlaylist, CreatePlaylist} from './pages/pageCollection.js'
 import { Routes, Route } from 'react-router-dom'
 import ProtectedRoute from './utils/ProtectedRoute.jsx'
-import WatchVideo from './pages/WatchVideo.jsx'
+
 
 function App() {
 
@@ -18,6 +18,9 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/upload' element={<Upload />} />
         <Route path='/watch/:videoId' element={<WatchVideo />} />
+        <Route path='/playlist/add/:videoId' element={<ChoosePlaylist />} />
+        <Route path='/playlist/create' element={<CreatePlaylist />} />
+
       </Route>
 
     </Routes>

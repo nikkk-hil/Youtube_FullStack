@@ -16,6 +16,8 @@ import VideoCard from "./VideoCard.jsx";
 import WatchVideoComponent from "./watchVideo/WatchVideoComponent.jsx";
 import VideoPlayer from "./VideoPlayer.jsx";
 import Comment from "./watchVideo/Comment.jsx";
+import PlaylistPopup from "./playlist/playlistPopup.jsx";
+import CreatePlaylistComponent from "./playlist/CreatePlaylistComponent.jsx";
 
 export {
     Header,
@@ -35,5 +37,7 @@ export {
     VideoCard,
     WatchVideoComponent,
     VideoPlayer,
-    Comment
+    Comment,
+    PlaylistPopup,
+    CreatePlaylistComponent
 }

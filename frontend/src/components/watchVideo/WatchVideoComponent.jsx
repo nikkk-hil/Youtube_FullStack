@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams,Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getVideoById, incrementView } from "../../api/video.api";
 import { VideoPlayer, Button, Input, Comment } from "../componentCollection.js";
@@ -166,13 +166,15 @@ function WatchVideoComponent() {
                 </Button>
               </div>
               <div>
-                <Button
+                <Link to={`/playlist/add/${videoId}`}>
+                  <Button
                   bgColor="bg-gray-800"
                   textColor="text-white"
                   className="font-semibold rounded-full active:bg-gray-200"
                 >
                   Add to playlist
                 </Button>
+                </Link>
               </div>
             </div>
           </div>
