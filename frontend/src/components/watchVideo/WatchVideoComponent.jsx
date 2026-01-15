@@ -1,7 +1,13 @@
-import { useParams,Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getVideoById, incrementView } from "../../api/video.api";
-import { VideoPlayer, Button, Input, Comment } from "../componentCollection.js";
+import {
+  VideoPlayer,
+  Button,
+  Input,
+  Comment,
+  PlaylistPopupComponent,
+} from "../componentCollection.js";
 import {
   getChannelSubscribers,
   toggleSubscription,
@@ -25,6 +31,8 @@ function WatchVideoComponent() {
   const [error, setError] = useState("");
   const [commenting, setCommenting] = useState(false);
   const [allComments, setAllComments] = useState(null);
+  const [showPlaylist, setShowPlaylist] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const handleComment = (e) => {
     e.preventDefault();
@@ -36,6 +44,8 @@ function WatchVideoComponent() {
     const commentData = {
       content: comment,
     };
+
+    setComment("");
 
     setCommenting(true);
     addComment(videoId, commentData)
@@ -76,6 +86,21 @@ function WatchVideoComponent() {
       .finally(() => setLoadingLike(false));
   };
 
+  // console.log(showPlaylist);
+
+  // useEffect(() => {
+  //   var timer;
+  //   if (saved) {
+  //     timer = setTimeout(() => {
+  //       setSaved(false);
+  //     }, 2000);
+  //   }
+
+  //   return () => {
+  //     timer && clearTimeout(timer)
+  //   }
+  // }, [saved]);
+
   useEffect(() => {
     getVideoById(videoId)
       .then((res) => {
@@ -107,7 +132,7 @@ function WatchVideoComponent() {
         console.log(res.data.data);
       })
       .catch((err) => console.error(err));
-  }, [videoId, comment, setComment]);
+  }, [videoId, comment]);
 
   if (loading)
     return (
@@ -120,6 +145,9 @@ function WatchVideoComponent() {
         <div className="flex justify-center w-3/5">
           <VideoPlayer onPlay={handleView} videoSrc={video.videoFile} />
         </div>
+        {
+          saved && <div className="absolute text-white text-5xl">Video saved to playlist</div>
+        }
       </div>
       <div className="flex justify-center">
         <div className="w-3/5">
@@ -165,16 +193,25 @@ function WatchVideoComponent() {
                   {`👍 ${likes}`}
                 </Button>
               </div>
-              <div>
-                <Link to={`/playlist/add/${videoId}`}>
-                  <Button
+              <div
+                className="relative inline-block"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Button
                   bgColor="bg-gray-800"
                   textColor="text-white"
                   className="font-semibold rounded-full active:bg-gray-200"
+                  onClick={() => setShowPlaylist(true)}
                 >
                   Add to playlist
                 </Button>
-                </Link>
+                {showPlaylist && (
+                  <PlaylistPopupComponent
+                    videoId={videoId}
+                    onClose={() => setShowPlaylist(false)}
+                    onSaved={() => setSaved(true)}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -193,7 +230,7 @@ function WatchVideoComponent() {
           </div>
           <div className="bg-gray-900 rounded-md mb-4">
             <div className="text-2xl text-gray-200 mb-3 p-2">Comments</div>
-            <div className="p-2"> 
+            <div className="p-2">
               <form className="flex" onSubmit={(e) => handleComment(e)}>
                 <Input
                   value={comment}

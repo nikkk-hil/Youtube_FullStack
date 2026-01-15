@@ -1,9 +1,11 @@
 import { useState } from "react"
 import { createPlaylist } from "../../api/playlist.api"
 import {Input, Button} from "../componentCollection"
-import { Link } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 
 function CreatePlaylistComponent() {
+    const navigate = useNavigate()
+    const {videoId} = useParams()
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [error, setError] = useState(null)
@@ -25,6 +27,7 @@ function CreatePlaylistComponent() {
         try {
             const res = await createPlaylist({title, description})
             console.log(res.data)
+            navigate(`/playlist/add/${videoId}`)
         } catch (error) {
             console.error(error)
         } finally {
