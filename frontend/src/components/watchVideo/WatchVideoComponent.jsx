@@ -134,6 +134,8 @@ function WatchVideoComponent() {
       .catch((err) => console.error(err));
   }, [videoId, comment]);
 
+  console.log(saved);
+
   if (loading)
     return (
       <div className="h-screen text-white text-4xl text-center">Loading</div>
@@ -146,7 +148,7 @@ function WatchVideoComponent() {
           <VideoPlayer onPlay={handleView} videoSrc={video.videoFile} />
         </div>
         {
-          saved && <div className="absolute text-white text-5xl">Video saved to playlist</div>
+          saved && <div className="absolute text-white">Video saved to playlist</div>
         }
       </div>
       <div className="flex justify-center">

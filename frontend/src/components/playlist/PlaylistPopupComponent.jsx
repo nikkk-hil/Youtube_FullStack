@@ -5,10 +5,9 @@ import {
   addVideoToPlaylist,
   getUserPlaylists,
 } from "../../api/playlist.api.js";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-function PlaylistPopupComponent({ videoId, onClose }) {
-  const navigate = useNavigate();
+function PlaylistPopupComponent({ videoId, onClose, onSaved }) {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [playlists, setPlaylists] = useState(null);
@@ -19,7 +18,8 @@ function PlaylistPopupComponent({ videoId, onClose }) {
       const res = await addVideoToPlaylist(pid, videoId);
       console.log(res.data);
       onClose();
-      
+      onSaved();
+
     } catch (error) {
       console.error(error);
     }
@@ -78,7 +78,7 @@ function PlaylistPopupComponent({ videoId, onClose }) {
             ))}
         </div>
       </div>
-      <Link>
+      <Link to={`/playlist/create/${videoId}`}>
         <Button className="w-full cursor-pointer">Create a Playlist</Button>
       </Link>
     </div>

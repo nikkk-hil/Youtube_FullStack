@@ -27,7 +27,7 @@ function CreatePlaylistComponent() {
         try {
             const res = await createPlaylist({title, description})
             console.log(res.data)
-            navigate(`/playlist/add/${videoId}`)
+            navigate(`/watch/${videoId}`)
         } catch (error) {
             console.error(error)
         } finally {
