@@ -19,6 +19,7 @@ import Comment from "./watchVideo/Comment.jsx";
 import PlaylistPopupComponent from "./playlist/PlaylistPopupComponent.jsx";
 import CreatePlaylistComponent from "./playlist/CreatePlaylistComponent.jsx";
 import PlaylistComponent from "./playlist/PlaylistComponent.jsx";
+import Toast from "./Toast.jsx";
 
 export {
     Header,
@@ -41,5 +42,6 @@ export {
     Comment,
     PlaylistPopupComponent,
     CreatePlaylistComponent,
-    PlaylistComponent
+    PlaylistComponent,
+    Toast
 }

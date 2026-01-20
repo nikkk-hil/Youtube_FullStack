@@ -6,19 +6,21 @@ import {
   getUserPlaylists,
 } from "../../api/playlist.api.js";
 import { Link } from "react-router-dom";
+import { useFeedback } from "../../context/FeedbackContext.jsx";
 
 function PlaylistPopupComponent({ videoId, onClose, onSaved }) {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [playlists, setPlaylists] = useState(null);
+  const {showMessage} = useFeedback();
 
-  const addVideo = async (pid) => {
+  const addVideo = async (pid, pname) => {
     try {
       console.log(pid);
       const res = await addVideoToPlaylist(pid, videoId);
       console.log(res.data);
       onClose();
-      onSaved();
+      showMessage(`Video added to ${pname}`)
 
     } catch (error) {
       console.error(error);
@@ -69,7 +71,7 @@ function PlaylistPopupComponent({ videoId, onClose, onSaved }) {
             playlists.map((playlist) => (
               <Button
                 key={playlist._id}
-                onClick={() => addVideo(playlist._id)}
+                onClick={() => addVideo(playlist._id, playlist.name)}
                 bgColor=""
                 className="hover:bg-gray-900"
               >
