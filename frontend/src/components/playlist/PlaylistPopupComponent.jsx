@@ -12,18 +12,19 @@ function PlaylistPopupComponent({ videoId, onClose, onSaved }) {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [playlists, setPlaylists] = useState(null);
-  const {showMessage} = useFeedback();
+  const { showMessage } = useFeedback();
 
   const addVideo = async (pid, pname) => {
     try {
       console.log(pid);
       const res = await addVideoToPlaylist(pid, videoId);
       console.log(res.data);
-      onClose();
-      showMessage(`Video added to ${pname}`)
-
+      showMessage(`Video added to ${pname}`);
     } catch (error) {
       console.error(error);
+      if (error.response.status === 409) showMessage(`Video already in ${pname} playlist`);
+    } finally {
+      onClose();
     }
   };
 
@@ -41,7 +42,7 @@ function PlaylistPopupComponent({ videoId, onClose, onSaved }) {
   }, [user._id]);
 
   useEffect(() => {
-    const handleClickOutside = () => onClose()
+    const handleClickOutside = () => onClose();
 
     document.addEventListener("click", handleClickOutside);
 
