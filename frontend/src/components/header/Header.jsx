@@ -12,7 +12,7 @@ import {
 export default function Header({ authorized=true }) {
     
     return(
-        <div className='flex items-center justify-between bg-black h-16 p-6'>
+        <div className='flex items-center justify-between bg-black h-16 p-6 fixed left-0 w-full z-50'>
             <div className='flex items-center gap-4'>
                 {authorized && <Menucard />}
                 <YouTube />
