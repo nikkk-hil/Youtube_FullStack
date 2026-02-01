@@ -24,7 +24,7 @@ export default function Header({ authorized=true }) {
                 {authorized && <UploadBtn />}
                 {authorized && <NotificationLogo />}
                 {authorized && <Avatar />}
-                {authorized && <Logout />}
+                {/* {authorized && <Logout />} */}
             </div>
         </div>
     )

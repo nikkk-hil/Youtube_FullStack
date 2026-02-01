@@ -32,7 +32,6 @@ function WatchVideoComponent() {
   const [commenting, setCommenting] = useState(false);
   const [allComments, setAllComments] = useState(null);
   const [showPlaylist, setShowPlaylist] = useState(false);
-  const [saved, setSaved] = useState(false);
 
   const handleComment = (e) => {
     e.preventDefault();
@@ -134,7 +133,6 @@ function WatchVideoComponent() {
       .catch((err) => console.error(err));
   }, [videoId, comment]);
 
-  console.log(saved);
 
   if (loading)
     return (
@@ -147,9 +145,6 @@ function WatchVideoComponent() {
         <div className="flex justify-center w-3/5">
           <VideoPlayer onPlay={handleView} videoSrc={video.videoFile} />
         </div>
-        {
-          saved && <div className="absolute text-white">Video saved to playlist</div>
-        }
       </div>
       <div className="flex justify-center">
         <div className="w-3/5">
@@ -211,7 +206,6 @@ function WatchVideoComponent() {
                   <PlaylistPopupComponent
                     videoId={videoId}
                     onClose={() => setShowPlaylist(false)}
-                    onSaved={() => setSaved(true)}
                   />
                 )}
               </div>
