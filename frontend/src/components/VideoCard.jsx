@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 function VideoCard({ video }) {
     const [timeAgo, setTimeAgo] = useState("")
     const [duration, setDuration] = useState("")
+    const playlistId = null;
 
     useEffect( () => {
         console.log(video._id);
@@ -15,7 +16,7 @@ function VideoCard({ video }) {
 
   return (
     <div className='w-112 h-96 hover:bg-gray-800 p-4 rounded-xl'>
-        <Link to={`/watch/${video._id}`}>
+        <Link to={`/watch/${video._id}/${playlistId}`}>
             <div className='h-64 mb-2'>
                 <img src={`${video.thumbnail}`} alt="thumbnail" className='w-full h-full object-cover'/>
             </div>

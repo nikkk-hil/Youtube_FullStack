@@ -2,9 +2,11 @@ import { useEffect } from "react";
 import Button from "../Button";
 import { useAuth } from "../../context/AuthContext";
 import { userLogout } from "../../api/user.api";
+import { Link } from "react-router-dom";
 
 function AvatarDropdown({ onClose }) {
-  const { setUser } = useAuth();
+  const { user, setUser } = useAuth();
+  const userId = user._id;
 
   useEffect(() => {
     const handleClose = () => onClose();
@@ -35,13 +37,14 @@ function AvatarDropdown({ onClose }) {
       >
         Your Channel
       </Button>
-      <Button
-        onClick={() => handlePlaylistNav()}
+      <Link to={`/playlist/${userId}`}>
+        <Button
         bgColor=""
         className="w-full text-left hover:bg-gray-700"
       >
         Playlists
       </Button>
+        </Link>
       <Button
         onClick={() => handleLikedVideosNav()}
         bgColor=""

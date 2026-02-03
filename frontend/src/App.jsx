@@ -23,10 +23,10 @@ function App() {
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<Home />} />
         <Route path="/upload" element={<Upload />} />
-        <Route path="/watch/:videoId" element={<WatchVideo />} />
+        <Route path="/watch/:videoId/:playlistId" element={<WatchVideo />} />
         <Route path="/playlist/add/:videoId" element={<PlaylistPopup />} />
         <Route path="/playlist/create/:videoId" element={<CreatePlaylist />} />
-        <Route path="/playlist/:pid" element={<Playlist />} />
+        <Route path="/playlist/:userId" element={<Playlist />} />
       </Route>
     </Routes>
   );

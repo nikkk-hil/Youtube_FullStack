@@ -26,7 +26,7 @@ function HomeComponent() {
   if (loading) return <div className="h-screen text-white text-4xl text-center">Loading</div>;
   else
     return (
-      <div className="grid grid-cols-3 gap-2 h-full text-white">
+      <div className="pt-16 grid grid-cols-3 gap-2 h-full text-white">
         {
           videos.map( (video) => (
             <VideoCard key={video._id} video={video} />

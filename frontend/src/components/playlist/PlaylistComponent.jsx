@@ -1,24 +1,47 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { getPlaylistById } from '../../api/playlist.api'
+import { getUserPlaylists } from '../../api/playlist.api'
+import { useAuth } from '../../context/AuthContext.jsx'
+import {Button} from "../componentCollection.js"
+import { Link } from 'react-router-dom'
 
 export default function PlaylistComponent() {
-    const {pid} = useParams()
-    const [videos, setVideos] = useState(null)
+    const {user} = useAuth()
+    const [playlists, setPlaylists] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect ( () => {
         ( async () => {
             try {
-                const res = await getPlaylistById(pid)
-                console.log(res.data)
+                const res = await getUserPlaylists(user._id)
+                console.log(res.data.data);
+                setPlaylists(res.data.data);
             } catch (error) {
                 console.error(error)
+            } finally {
+                setLoading(false);
             }
         })();
-    }, [])
+    }, [user]);
+
+  if (loading) return <div className="h-screen text-white text-4xl text-center">Loading</div>;
+
   return (
-    <div className='text-white'>
-        Hello
+    <div className='pt-16 h-screen'>
+        <div className='text-white text-2xl text-center m-4'>
+            Your Playlists
+        </div>
+        {playlists && playlists.map( (playlist) => 
+            <Link key={playlist._id} to={`/watch/${playlist?.videos?.[0]}/${playlist._id}`}>
+                <Button className='w-full text-center text-white hover:bg-gray-900' bgColor=''>
+                <div className='text-xl'>
+                    {playlist.name}
+                </div>
+                <div className='text-gray-200'>
+                    {playlist.description}
+                </div>
+            </Button>
+            </Link>
+         )}
     </div>
   )
 }
