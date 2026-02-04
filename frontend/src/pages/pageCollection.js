@@ -6,6 +6,7 @@ import Upload from "./Upload.jsx";
 import WatchVideo from "./WatchVideo.jsx";
 import CreatePlaylist from "./CreatePlaylist.jsx";
 import Playlist from "./Playlist.jsx";
+import PlaylistVideos from "./PlaylistVideos.jsx";
 
 export {
     Login,
@@ -15,5 +16,6 @@ export {
     WatchVideo,
     PlaylistPopup,
     CreatePlaylist,
-    Playlist
+    Playlist,
+    PlaylistVideos
 }

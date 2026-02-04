@@ -21,6 +21,7 @@ import CreatePlaylistComponent from "./playlist/CreatePlaylistComponent.jsx";
 import PlaylistComponent from "./playlist/PlaylistComponent.jsx";
 import Toast from "./Toast.jsx";
 import AvatarDropdown from "./header/AvatarDropdown.jsx";
+import PlaylistVideosComponent from "./playlist/PlaylistVideosComponent.jsx";
 
 export {
     Header,
@@ -45,5 +46,6 @@ export {
     CreatePlaylistComponent,
     PlaylistComponent,
     Toast,
-    AvatarDropdown
+    AvatarDropdown,
+    PlaylistVideosComponent
 }

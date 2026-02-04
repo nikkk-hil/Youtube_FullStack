@@ -31,7 +31,7 @@ export default function PlaylistComponent() {
             Your Playlists
         </div>
         {playlists && playlists.map( (playlist) => 
-            <Link key={playlist._id} to={`/watch/${playlist?.videos?.[0]}/${playlist._id}`}>
+            <Link key={playlist._id} to={`/playlist/${playlist._id}`}>
                 <Button className='w-full text-center text-white hover:bg-gray-900' bgColor=''>
                 <div className='text-xl'>
                     {playlist.name}

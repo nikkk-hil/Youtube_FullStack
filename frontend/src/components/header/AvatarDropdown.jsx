@@ -37,7 +37,7 @@ function AvatarDropdown({ onClose }) {
       >
         Your Channel
       </Button>
-      <Link to={`/playlist/${userId}`}>
+      <Link to={`/playlists/${userId}`}>
         <Button
         bgColor=""
         className="w-full text-left hover:bg-gray-700"
