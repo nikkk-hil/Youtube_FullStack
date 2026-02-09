@@ -18,6 +18,7 @@ function PlaylistVideosComponent() {
 
   const deleteTimeout = useRef({});
   const intervalRef = useRef(null);
+  const pendingDeletesRef = useRef({});
 
   const timoutFn = async (videoId) => {
     await removeVideoFromPlaylist(playlistId, videoId);
@@ -32,6 +33,7 @@ function PlaylistVideosComponent() {
   };
 
   useEffect(() => {
+    pendingDeletesRef.current = pendingDeletes;
     if (Object.keys(pendingDeletes).length === 0 && intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
@@ -42,13 +44,21 @@ function PlaylistVideosComponent() {
         1000,
       );
     }
-    return async () => {
+  }, [pendingDeletes]);
+
+  useEffect(() => {
+    return () => {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
-      for(const key of Object.keys(pendingDeletes))
-        await removeVideoFromPlaylist(playlistId, key);
-    }
-  }, [pendingDeletes]);
+
+      for(const videoId in deleteTimeout.current)
+        clearTimeout(deleteTimeout.current[videoId]);   //clear all timeout on unmount.
+
+      for(const videoId in pendingDeletesRef.current)
+        removeVideoFromPlaylist(playlistId, videoId);  //commit delete of all pendingDelete on unmount
+      
+    };
+  }, []);
 
   const handleRemoveVideo = async (videoId) => {
     const expiresAt = Date.now() + 3000;
