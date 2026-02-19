@@ -14,9 +14,11 @@ import {
 } from "../../api/subscription.api.js";
 import { toggleVideoLike } from "../../api/like.api.js";
 import { getVideoComments, addComment } from "../../api/comment.api.js";
+import PlaylistVideoList from "../playlist/PlaylistVideoList.jsx";
 
 function WatchVideoComponent() {
   const { videoId } = useParams();
+  const { playlistId } = useParams();
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [viewed, setViewed] = useState(false);
@@ -32,6 +34,7 @@ function WatchVideoComponent() {
   const [commenting, setCommenting] = useState(false);
   const [allComments, setAllComments] = useState(null);
   const [showPlaylist, setShowPlaylist] = useState(false);
+  const [watchingPlaylistVideo, setWatchingPlaylistVideo] = useState(false)
 
   const handleComment = (e) => {
     e.preventDefault();
@@ -101,9 +104,14 @@ function WatchVideoComponent() {
   // }, [saved]);
 
   useEffect(() => {
+
+    
+        if (playlistId){
+          setWatchingPlaylistVideo(true);
+        }
+
     getVideoById(videoId)
       .then((res) => {
-        console.log(res.data.data);
         setVideo(res.data.data.video);
         setIsSubscribed(res.data.data.isSubscribed);
         setLikes(parseInt(res.data.data.likes));
@@ -122,7 +130,7 @@ function WatchVideoComponent() {
       })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
-  }, [videoId]);
+  }, [videoId, playlistId]);
 
   useEffect(() => {
     getVideoComments(videoId)
@@ -145,7 +153,12 @@ function WatchVideoComponent() {
         <div className="flex justify-center w-3/5">
           <VideoPlayer onPlay={handleView} videoSrc={video.videoFile} />
         </div>
+                              {
+          watchingPlaylistVideo && 
+          <PlaylistVideoList playlistId={playlistId} videoId={videoId} />
+        }
       </div>
+
       <div className="flex justify-center">
         <div className="w-3/5">
           <div className="text-white font-semibold text-2xl mb-2">
