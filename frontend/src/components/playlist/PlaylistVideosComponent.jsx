@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getPlaylistById } from "../../api/playlist.api";
+import { useNavigate, useParams } from "react-router-dom";
+import { deletePlaylist, getPlaylistById, updatePlaylist } from "../../api/playlist.api";
 import { Link } from "react-router-dom";
 import { getAgoTime, getVideoDuration } from "../../utils/time";
 import Button from "../Button";
 import { removeVideoFromPlaylist } from "../../api/playlist.api";
 import { useRef } from "react";
+import Input from "../Input";
 
 function PlaylistVideosComponent() {
   const { playlistId } = useParams();
@@ -15,10 +16,46 @@ function PlaylistVideosComponent() {
   const [videos, setVideos] = useState([]);
   const [pendingDeletes, setPendingDeletes] = useState({});
   const [tick, setTick] = useState(0);
+  const [editClicked, setEditClicked] = useState(false);
+  const [playlistName, setPlaylistName] = useState("")
+  const [playlistDescription, setPlaylistDescription] = useState("")
 
+  const navigate = useNavigate();
   const deleteTimeout = useRef({});
   const intervalRef = useRef(null);
-  const pendingDeletesRef = useRef({});
+  const pendingDeletesRef = useRef({})
+  const playlistNameRef = useRef(null);
+
+  const handleDeletePlaylist = async () => {
+    try {
+      const res = await deletePlaylist(playlistId);
+      console.log(res.data);
+      
+    } catch (error) {
+      console.error(error)
+    } finally {
+      navigate(-1) || navigate ("/")
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const tittle = playlistName;
+    const description = playlistDescription
+    
+    try {
+      const res = await updatePlaylist(playlistId, {tittle, description});  
+      console.log(res.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setEditClicked(false)
+    }
+  }
+
+  useEffect( () => {
+    playlistNameRef.current?.focus();
+  }, [editClicked])
 
   const timoutFn = async (videoId) => {
     await removeVideoFromPlaylist(playlistId, videoId);
@@ -102,6 +139,8 @@ function PlaylistVideosComponent() {
       try {
         const res = await getPlaylistById(playlistId);
         setPlaylist(res.data.data[0]);
+        setPlaylistName(res.data.data[0].name)
+        setPlaylistDescription(res.data.data[0].description)
         setVideos(res.data.data[0].videos);
       } catch (error) {
         console.error(error);
@@ -119,16 +158,54 @@ function PlaylistVideosComponent() {
     );
   return (
     <div className="pt-16 h-full text-center bg-black">
-      <div className="text-white text-3xl">{playlist.name}</div>
-      <div className="text-gray-200 mb-2">{playlist.description}</div>
-      <div className="flex gap-4 justify-center">
-        <div className="text-sm text-gray-400 hover:text-red-600 cursor-pointer">
+      <div
+       hidden={editClicked}
+       >
+        <div className="text-white text-3xl">{playlistName}</div>
+      <div className="text-gray-200 mb-2">{playlistDescription}</div>
+      <div className="flex gap-4 justify-center"
+      >
+        <div className="text-sm text-gray-400 hover:text-red-600 cursor-pointer"
+          onClick={() => setEditClicked(true)}
+        >
           Edit
         </div>
-        <div className="text-sm text-gray-400 hover:text-red-600 cursor-pointer">
+        <div className="text-sm text-gray-400 hover:text-red-600 cursor-pointer"
+          onClick={handleDeletePlaylist}
+        >
           Delete Playlist
         </div>
       </div>
+      </div>
+
+      <div
+       hidden={!editClicked}
+       >
+      <form onSubmit={handleSubmit}>
+        <Input
+          ref={playlistNameRef}
+          type="text"
+          value={playlistName}
+          className='text-white text-3xl text-center bg-gray-800 rounded-lg p-1 mb-4'
+          onChange={(e) => setPlaylistName(e.target.value)}
+        />
+        <Input
+          type="text"
+          value={playlistDescription}
+          className='text-white w-1/5 text-center bg-gray-900 rounded-lg p-1 mb-1'
+          onChange={(e) => setPlaylistDescription(e.target.value)}
+        />
+        <div className="flex justify-center">
+          <Button type="submit" bgColor="" textColor="text-gray-400" className="text-sm hover:text-red-600 cursor-pointer">
+          Update
+        </Button>
+        <Button bgColor="" textColor="text-gray-400" className="text-sm hover:text-red-600 cursor-pointer" onClick={() => setEditClicked(false)}>
+          Cancel
+        </Button>
+        </div>
+      </form>
+      </div>
+
       {videos &&
         videos.map((video) => {
           const pendingDelete = !!pendingDeletes[video._id];
@@ -141,7 +218,8 @@ function PlaylistVideosComponent() {
             >
               <Link to={`/watch/${video._id}/${playlistId}`}>
                 <div
-                  className={`flex gap-12 m-8 p-2 ${pendingDelete && `opacity-40`}`}
+                  className={`flex gap-12 m-8 p-2`}
+                  hidden={pendingDelete}
                 >
                   <div className=" h-48 w-80">
                     <img

@@ -5,7 +5,6 @@ import { useParams, useNavigate } from "react-router-dom"
 
 function CreatePlaylistComponent() {
     const navigate = useNavigate()
-    const {videoId} = useParams()
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [error, setError] = useState(null)
@@ -27,7 +26,7 @@ function CreatePlaylistComponent() {
         try {
             const res = await createPlaylist({title, description})
             console.log(res.data)
-            navigate(`/watch/${videoId}`)
+            navigate(-1) || navigate("/")
         } catch (error) {
             console.error(error)
         } finally {

@@ -26,7 +26,7 @@ function App() {
         <Route path="/upload" element={<Upload />} />
         <Route path="/watch/:videoId/:playlistId" element={<WatchVideo />} />
         <Route path="/playlist/add/:videoId" element={<PlaylistPopup />} />
-        <Route path="/playlist/create/:videoId" element={<CreatePlaylist />} />
+        <Route path="/playlist/create" element={<CreatePlaylist />} />
         <Route path="/playlists/:userId" element={<Playlist />} />
         <Route path="/playlist/:playlistId" element={<PlaylistVideos />} />
       </Route>

@@ -81,7 +81,7 @@ function PlaylistPopupComponent({ videoId, onClose, onSaved }) {
             ))}
         </div>
       </div>
-      <Link to={`/playlist/create/${videoId}`}>
+      <Link to={`/playlist/create`}>
         <Button className="w-full cursor-pointer">Create a Playlist</Button>
       </Link>
     </div>

@@ -43,14 +43,6 @@ export default function PlaylistComponent() {
                 <div className="text-gray-200">{playlist.description}</div>
               </Button>
             </Link>
-            <div className="flex justify-center gap-4">
-              <Button className="text-white p-0 m-0" bgColor="">
-                Edit
-              </Button>
-              <Button className="text-white rounded-full" bgColor="bg-red-700">
-                delete
-              </Button>
-            </div>
           </div>
         ))}
     </div>
