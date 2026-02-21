@@ -15,8 +15,11 @@ import {
 import { toggleVideoLike } from "../../api/like.api.js";
 import { getVideoComments, addComment } from "../../api/comment.api.js";
 import PlaylistVideoList from "../playlist/PlaylistVideoList.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 function WatchVideoComponent() {
+  const {user} = useAuth()
+
   const { videoId } = useParams();
   const { playlistId } = useParams();
   const [video, setVideo] = useState(null);
@@ -35,6 +38,7 @@ function WatchVideoComponent() {
   const [allComments, setAllComments] = useState(null);
   const [showPlaylist, setShowPlaylist] = useState(false);
   const [watchingPlaylistVideo, setWatchingPlaylistVideo] = useState(false)
+  const [userVideo, setUserVideo] = useState(false);
 
   const handleComment = (e) => {
     e.preventDefault();
@@ -113,6 +117,7 @@ function WatchVideoComponent() {
     getVideoById(videoId)
       .then((res) => {
         setVideo(res.data.data.video);
+        setUserVideo((res.data.data.video.owner._id === user._id))
         setIsSubscribed(res.data.data.isSubscribed);
         setLikes(parseInt(res.data.data.likes));
         setIsLiked(res.data.data.isLiked);
@@ -140,6 +145,7 @@ function WatchVideoComponent() {
       })
       .catch((err) => console.error(err));
   }, [videoId, comment]);
+
 
 
   if (loading)
@@ -184,6 +190,7 @@ function WatchVideoComponent() {
                   className="font-semibold rounded-full active:bg-gray-200"
                   onClick={handleSubscribeButton}
                   disabled={subscribing}
+                  hidden={userVideo}
                 >
                   {isSubscribed ? "Unsubscribe" : "Subscribe"}
                 </Button>
