@@ -30,13 +30,14 @@ function AvatarDropdown({ onClose }) {
 
   return (
     <div className="absolute right-4 m-2 w-1/10 bg-gray-900" onClick={(e) => e.stopPropagation()}>
-      <Button
-        onClick={() => handleChannelNav()}
+      <Link to={`/channel-profile/${user.username}`}>
+            <Button
         bgColor=""
         className="w-full text-left hover:bg-gray-700"
       >
         Your Channel
       </Button>
+      </Link>
       <Link to={`/playlists/${userId}`}>
         <Button
         bgColor=""

@@ -11,7 +11,8 @@ import {
   CreatePlaylist,
   Playlist,
   PlaylistVideos,
-  LikedVideos
+  LikedVideos,
+  UserChannel
 } from "./pages/pageCollection.js";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path="/playlists/:userId" element={<Playlist />} />
         <Route path="/playlist/:playlistId" element={<PlaylistVideos />} />
         <Route path="/liked-videos/:userId" element={<LikedVideos />} />
+        <Route path="/channel-profile/:username" element={<UserChannel />} />
       </Route>
     </Routes>
   );

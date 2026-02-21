@@ -23,6 +23,7 @@ import Toast from "./Toast.jsx";
 import AvatarDropdown from "./header/AvatarDropdown.jsx";
 import PlaylistVideosComponent from "./playlist/PlaylistVideosComponent.jsx";
 import LikedVideosComponent from "./likedVideos/likedVideosComponent.jsx";
+import UserChannelComponent from "./userChannel/UserChannelComponent.jsx";
 
 export {
     Header,
@@ -49,5 +50,6 @@ export {
     Toast,
     AvatarDropdown,
     PlaylistVideosComponent,
-    LikedVideosComponent
+    LikedVideosComponent,
+    UserChannelComponent
 }
