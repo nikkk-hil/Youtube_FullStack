@@ -7,6 +7,7 @@ import WatchVideo from "./WatchVideo.jsx";
 import CreatePlaylist from "./CreatePlaylist.jsx";
 import Playlist from "./Playlist.jsx";
 import PlaylistVideos from "./PlaylistVideos.jsx";
+import LikedVideos from "./LikedVideos.jsx";
 
 export {
     Login,
@@ -17,5 +18,6 @@ export {
     PlaylistPopup,
     CreatePlaylist,
     Playlist,
-    PlaylistVideos
+    PlaylistVideos,
+    LikedVideos
 }

@@ -10,7 +10,8 @@ import {
   PlaylistPopup,
   CreatePlaylist,
   Playlist,
-  PlaylistVideos
+  PlaylistVideos,
+  LikedVideos
 } from "./pages/pageCollection.js";
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Route path="/playlist/create" element={<CreatePlaylist />} />
         <Route path="/playlists/:userId" element={<Playlist />} />
         <Route path="/playlist/:playlistId" element={<PlaylistVideos />} />
+        <Route path="/liked-videos/:userId" element={<LikedVideos />} />
       </Route>
     </Routes>
   );

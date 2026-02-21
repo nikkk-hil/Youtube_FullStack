@@ -45,13 +45,14 @@ function AvatarDropdown({ onClose }) {
         Playlists
       </Button>
         </Link>
-      <Button
-        onClick={() => handleLikedVideosNav()}
+        <Link to={`/liked-videos/${userId}`}>
+                <Button
         bgColor=""
         className="w-full text-left hover:bg-gray-700"
       >
         Liked Videos
       </Button>
+        </Link>
       <Button
         onClick={() => handleLogout()}
         className="w-full text-left cursor-pointer"
