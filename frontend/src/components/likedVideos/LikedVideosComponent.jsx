@@ -29,26 +29,26 @@ function LikedVideosComponent() {
             const videoFile = video.video;
           return (
             <div
-              key={videoFile._id}
+              key={video._id}
               className="flex justify-between hover:bg-gray-900"
             >
-              <Link to={`/watch/${videoFile._id}/${null}`}>
+              <Link to={`/watch/${videoFile?._id}/${null}`}>
                 <div
                   className={`flex gap-12 m-6 p-2`}
                 >
                   <div className=" h-48 w-80">
                     <img
-                      src={videoFile.thumbnail}
-                      alt={`${videoFile.title} thumbnail image `}
+                      src={videoFile?.thumbnail}
+                      alt={`${videoFile?.title} thumbnail image `}
                       className="w-full h-full object-cover rounded-xl"
                     />
                   </div>
                   <div className="text-left">
                     <div className="text-white text-3xl mb-1">
-                      {videoFile.title}
+                      {videoFile?.title}
                     </div>
                     <div className="text-gray-300 mb-4">
-                      {videoFile.description}
+                      {videoFile?.description}
                     </div>
                   </div>
                 </div>
