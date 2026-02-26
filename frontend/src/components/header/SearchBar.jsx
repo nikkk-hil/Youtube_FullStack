@@ -62,7 +62,12 @@ export default function SearchBar() {
         onChange={ (e) => setQuery(e.target.value) }
         className='w-96'
       />
-      <Button bgColor='' className='text-xl' disable={pause}>
+      <Button bgColor='' className='text-xl cursor-pointer' disable={pause}
+        onClick={ () => {
+          setQuery("")
+          inputRef.current.focus();
+        }}
+      >
         X
       </Button>
       <Button bgColor='' type='submit' disable={pause}>
