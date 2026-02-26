@@ -1,6 +1,6 @@
 import api from "./client.api.js";
 
-const getAllVideos = () => api.get("/video/get-all-videos");
+const getAllVideos = (query) => api.get(`/video/get-all-videos?${query}`);
 const publishVideo = (data) => api.post("/video/publish-video", data);
 const getVideoById = (videoId) => api.get(`/video/get-video/${videoId}`);
 const updateVideo = (videoId, data) => api.patch(`/video/update-video/${videoId}`, data);

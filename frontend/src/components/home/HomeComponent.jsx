@@ -12,7 +12,7 @@ function HomeComponent() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getAllVideos()
+    getAllVideos("")
       .then((res) => {
         setTotalVideoCount(parseInt(res.data.data.totalVideoCnt));
         setPageCount(parseInt(res.data.data.totalPageCnt));
