@@ -24,6 +24,7 @@ import AvatarDropdown from "./header/AvatarDropdown.jsx";
 import PlaylistVideosComponent from "./playlist/PlaylistVideosComponent.jsx";
 import LikedVideosComponent from "./likedVideos/likedVideosComponent.jsx";
 import UserChannelComponent from "./userChannel/UserChannelComponent.jsx";
+import SearchedVideoComponent from "./searchedVideo/SearchedVideoComponent.jsx";
 
 export {
     Header,
@@ -51,5 +52,6 @@ export {
     AvatarDropdown,
     PlaylistVideosComponent,
     LikedVideosComponent,
-    UserChannelComponent
+    UserChannelComponent,
+    SearchedVideoComponent
 }

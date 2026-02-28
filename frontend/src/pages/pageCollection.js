@@ -9,6 +9,7 @@ import Playlist from "./Playlist.jsx";
 import PlaylistVideos from "./PlaylistVideos.jsx";
 import LikedVideos from "./LikedVideos.jsx";
 import UserChannel from "./UserChannel.jsx";
+import SearchedVideo from "./SearchedVideo.jsx";
 
 export {
     Login,
@@ -21,5 +22,6 @@ export {
     Playlist,
     PlaylistVideos,
     LikedVideos,
-    UserChannel
+    UserChannel,
+    SearchedVideo
 }
