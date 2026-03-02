@@ -16,7 +16,6 @@ function VideoCard({ video, forChannel = false }) {
         setDeleted(false)
         setDeleting(true);
         const res = await deleteVideo(video._id);
-        console.log(res.data);
     } catch (error) {
         console.error(error);
     }finally {
@@ -26,7 +25,6 @@ function VideoCard({ video, forChannel = false }) {
   }
 
   useEffect(() => {
-    console.log(video._id);
     const t = getAgoTime(video.createdAt);
     setTimeAgo(t);
     setDuration(getVideoDuration(video.duration));
