@@ -10,6 +10,7 @@ function HomeComponent() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [hasMorePage, setHasMorePage] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(true);
 
   const loaderRef = useRef(null);
   const pageCount = useRef(null);
@@ -20,6 +21,7 @@ function HomeComponent() {
       limit: "2"
     }
     const query = new URLSearchParams(queryParams).toString();
+      setLoading(true);
     getAllVideos(query)
       .then((res) => {
         pageCount.current || (pageCount.current = parseInt(res.data.data.totalPageCnt));
@@ -29,7 +31,7 @@ function HomeComponent() {
           setHasMorePage(false);
       })
       .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
+      .finally(() => {setLoading(false), setInitialLoading(false)});
   }, [page]);
 
   useEffect( () => {
@@ -37,18 +39,22 @@ function HomeComponent() {
   },[page])
 
   useEffect (() => {
-    console.log("Inside Observer UseEffect!!");
+    // console.log("Inside Observer UseEffect!!");
     
 
     if (!loaderRef.current)
         return;
 
     const observer = new IntersectionObserver((entries) => {
+      console.log(entries);
       const entry = entries[0];
       if (!entry.isIntersecting || !hasMorePage || loading)
         return;
 
       setPage(prev => prev+1);
+    }, {
+      threshold: 0,
+      rootMargin: "20px"
     })
     observer.observe(loaderRef.current);
 
@@ -57,7 +63,7 @@ function HomeComponent() {
     }
   },[hasMorePage, loading])
 
-  if (loading) return <div className="h-screen text-white text-4xl text-center">Loading</div>;
+  if (initialLoading) return <div className="h-screen text-white text-4xl text-center">Loading</div>;
   else
     return (
       <div className="pt-16 h-full text-white">
@@ -68,7 +74,7 @@ function HomeComponent() {
           ))
         }
         </div>
-        <div ref={loaderRef}>Loading More...</div>
+        <div ref={loaderRef} hidden={!hasMorePage}>Loading More...</div>
       </div>
     );
 }
