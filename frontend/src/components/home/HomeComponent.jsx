@@ -34,10 +34,6 @@ function HomeComponent() {
       .finally(() => {setLoading(false), setInitialLoading(false)});
   }, [page]);
 
-  useEffect( () => {
-    console.log(page);
-  },[page])
-
   useEffect (() => {
     // console.log("Inside Observer UseEffect!!");
     
@@ -46,7 +42,7 @@ function HomeComponent() {
         return;
 
     const observer = new IntersectionObserver((entries) => {
-      console.log(entries);
+      // console.log(entries);
       const entry = entries[0];
       if (!entry.isIntersecting || !hasMorePage || loading)
         return;
