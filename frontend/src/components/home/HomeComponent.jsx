@@ -18,7 +18,7 @@ function HomeComponent() {
   useEffect(() => {
     const queryParams = {
       page,
-      limit: "2"
+      limit: "6"
     }
     const query = new URLSearchParams(queryParams).toString();
       setLoading(true);
