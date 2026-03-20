@@ -22,7 +22,7 @@ import PlaylistComponent from "./playlist/PlaylistComponent.jsx";
 import Toast from "./Toast.jsx";
 import AvatarDropdown from "./header/AvatarDropdown.jsx";
 import PlaylistVideosComponent from "./playlist/PlaylistVideosComponent.jsx";
-import LikedVideosComponent from "./likedVideos/likedVideosComponent.jsx";
+import LikedVideosComponent from "./likedVideos/LikedVideosComponent.jsx";
 import UserChannelComponent from "./userChannel/UserChannelComponent.jsx";
 import SearchedVideoComponent from "./searchedVideo/SearchedVideoComponent.jsx";
 
