@@ -1,5 +1,6 @@
 import { useAuth } from "../context/AuthContext.jsx";
 import { Outlet, Navigate } from "react-router-dom";
+import Loading from "../components/Loading.jsx";
 
 
 
@@ -7,13 +8,7 @@ function ProtectedRoute( ) {
   const {user, loading} = useAuth()
 
   if (loading){
-    return(
-      <div className="flex items-center justify-center">
-        <h1>
-          Loading...
-        </h1>
-      </div>
-    )
+    return <Loading message="Verifying session..." fullScreen={false} className="min-h-[40vh]" />
   }
 
   if(!user)

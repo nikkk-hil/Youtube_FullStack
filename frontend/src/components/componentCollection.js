@@ -25,6 +25,7 @@ import PlaylistVideosComponent from "./playlist/PlaylistVideosComponent.jsx";
 import LikedVideosComponent from "./likedVideos/LikedVideosComponent.jsx";
 import UserChannelComponent from "./userChannel/UserChannelComponent.jsx";
 import SearchedVideoComponent from "./searchedVideo/SearchedVideoComponent.jsx";
+import Loading from "./Loading.jsx";
 
 export {
     Header,
@@ -53,5 +54,6 @@ export {
     PlaylistVideosComponent,
     LikedVideosComponent,
     UserChannelComponent,
-    SearchedVideoComponent
+    SearchedVideoComponent,
+    Loading
 }

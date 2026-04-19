@@ -1,5 +1,6 @@
 import { getUser } from "../api/user.api.js"
 import { createContext, useContext, useEffect, useState } from "react"
+import Loading from "../components/Loading.jsx";
 
 /*
     AuthProvider = long-lived React component
@@ -37,9 +38,7 @@ const AuthProvider = function( {children} ){
 
     if (loading)
         return(
-            <h1>
-                Loading....
-            </h1>
+            <Loading message="Checking your account..." />
         )
 
     return (
