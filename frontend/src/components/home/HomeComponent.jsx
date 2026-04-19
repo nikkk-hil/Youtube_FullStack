@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { getAllVideos } from "../../api/video.api.js";
-import { VideoCard } from "../componentCollection.js";
+import { Loading, VideoCard } from "../componentCollection.js";
 
 function HomeComponent() {
   const { user } = useAuth();
@@ -31,7 +31,10 @@ function HomeComponent() {
           setHasMorePage(false);
       })
       .catch((err) => console.error(err))
-      .finally(() => {setLoading(false), setInitialLoading(false)});
+      .finally(() => {
+        setLoading(false);
+        setInitialLoading(false);
+      });
   }, [page]);
 
   useEffect (() => {
@@ -59,18 +62,31 @@ function HomeComponent() {
     }
   },[hasMorePage, loading])
 
-  if (initialLoading) return <div className="h-screen text-white text-4xl text-center">Loading</div>;
+  if (initialLoading) return <Loading message="Curating fresh videos..." />;
   else
     return (
-      <div className="pt-16 h-full text-white">
-        <div className="grid grid-cols-3 gap-2 ">
-          {
-          videos.map( (video) => (
-            <VideoCard key={video._id} video={video} />
-          ))
-        }
+      <div className="app-page pt-24 pb-10">
+        <div className="mx-auto w-full max-w-[1400px] px-4 sm:px-6">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-2">
+            <div>
+              <p className="text-xs uppercase tracking-[0.2em] text-zinc-400">Discover</p>
+              <h1 className="display-title text-4xl text-zinc-100 sm:text-5xl">Latest Drops</h1>
+            </div>
+            <p className="text-sm text-zinc-400">{videos.length} videos loaded</p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            {
+            videos.map( (video) => (
+              <VideoCard key={video._id} video={video} />
+            ))
+          }
+          </div>
+
+          <div ref={loaderRef} className="py-6 text-center text-sm text-zinc-400" hidden={!hasMorePage}>
+            {loading ? "Loading more videos..." : "Scroll for more"}
+          </div>
         </div>
-        <div ref={loaderRef} hidden={!hasMorePage}>Loading More...</div>
       </div>
     );
 }

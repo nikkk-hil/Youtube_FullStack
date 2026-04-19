@@ -30,49 +30,59 @@ function VideoCard({ video, forChannel = false }) {
     setDuration(getVideoDuration(video.duration));
   }, []);
 
+  const ownerName = video.owner?.username || "unknown";
+  const ownerAvatar = video.owner?.avatar;
+
   return (
-    <div className={`${forChannel ? `w-94` : `w-112 h-96`} hover:bg-gray-800 p-4 rounded-xl`} hidden={deleted}>
-      <Link to={`/watch/${video._id}/${playlistId}`} className={`${deleting ? `cursor-default` : ``}`} onClick={ (e) => deleting && e.preventDefault()}>
-        <div className="h-64 mb-2">
+    <div className="group surface-card w-full p-3 transition duration-300 hover:-translate-y-1 hover:border-zinc-500/70" hidden={deleted}>
+      <Link
+        to={`/watch/${video._id}/${playlistId}`}
+        className={`${deleting ? `cursor-default` : ``}`}
+        onClick={ (e) => deleting && e.preventDefault()}
+      >
+        <div className="relative mb-3 h-52 overflow-hidden rounded-xl">
           <img
             src={`${video.thumbnail}`}
             alt="thumbnail"
-            className="w-full h-full object-cover"
+            className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04]"
           />
+          <div className="absolute bottom-2 right-2 rounded-md bg-black/75 px-2 py-1 text-xs font-semibold text-zinc-100">
+            {duration}
+          </div>
         </div>
       </Link>
-      <div className="flex p-1 justify-between">
-        <div className="flex gap-4">
-          <div hidden={forChannel}>
+
+      <div className="flex items-start justify-between gap-3 p-1">
+        <div className="flex min-w-0 gap-3">
+          <div hidden={forChannel || !ownerAvatar}>
             <img
-              src={`${video.owner?.avatar}`}
+              src={`${ownerAvatar}`}
               alt="channel profile picture"
-              className="h-12 rounded-full"
+              className="h-10 w-10 rounded-full border border-zinc-600/70 object-cover"
             />
           </div>
-          <div>
-            <div className="font-semibold text-lg">{video.title}</div>
-            <div>{video.owner.username}</div>
-            <div>
+
+          <div className="min-w-0">
+            <div className="text-base font-semibold leading-tight text-zinc-100">{video.title}</div>
+            <div className="mt-1 text-sm text-zinc-400">{ownerName}</div>
+            <div className="mt-1 text-xs text-zinc-500">
               {`${video.views} ${video.views > 1 ? "views" : "view"}   |  ${timeAgo}`}
             </div>
           </div>
         </div>
-        <div>
-          <div>{duration}</div>
-          <div className="flex gap-3 mt-2" hidden={!forChannel}>
+
+        <div className="flex flex-col items-end gap-2" hidden={!forChannel}>
+          <div className="flex gap-2">
             <Button
-              bgColor=""
-              textColor=""
-              className="text-gray-400 text-sm cursor-pointer hover:text-red-600"
+              variant="ghost"
+              className="border-zinc-700/70 px-3 py-1 text-xs text-zinc-300 hover:border-zinc-500"
               disable={deleting}
             >
               Edit
             </Button>
             <Button
-              bgColor=""
-              textColor=""
-              className="text-gray-400 text-sm cursor-pointer hover:text-red-600"
+              variant="ghost"
+              className="border-zinc-700/70 px-3 py-1 text-xs text-rose-300 hover:border-rose-500/70 hover:bg-rose-950/30"
               onClick={handleDeleteButton}
               disable={deleting}
             >

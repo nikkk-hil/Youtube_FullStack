@@ -77,8 +77,9 @@ export default function SignupComponent() {
         setUserRegistered(true);
         console.log(res);
       })
-      .catch((res, err) => {
-        if (res.status === 409) setError("Username or Email already exists");
+      .catch((err) => {
+        if (err?.response?.status === 409) setError("Username or Email already exists");
+        else setError("Unable to register right now. Please try again.");
         console.error(err);
       })
       .finally(() => setLoading(false));
@@ -99,122 +100,110 @@ export default function SignupComponent() {
   };
 
   return (
-    <div className="flex items-center justify-center bg-black h-170 w-full">
-      <div className="flex justify-between bg-[#121212] rounded-3xl shadow-lg shadow-red-800/50 h-3/4 w-2/3">
-        <div></div>
-        <div className="flex items-center justify-center w-1/2 p-4">
-          <div>
-            <h1 className="font-serif text-white text-3xl text-center">
-              Create Account
-            </h1>
-            <p className="text-gray-300 text-md font-light text-center tracking-wide mt-2 mb-4">
-              Enter your details
-            </p>
-            <form onSubmit={handleSubmit}>
-              <Input
-                value={fullName}
-                type="text"
-                placeholder=" Full Name"
-                onChange={(e) => setFullName(e.target.value)}
-                className="text-xl text-white font-light bg-[#080808] rounded-lg mb-3"
-              />
-              <Input
-                value={email}
-                type="email"
-                placeholder=" Email"
-                onChange={(e) => setEmail(e.target.value)}
-                className=" text-xl text-white font-light bg-[#080808] rounded-lg mb-3"
-              />
-              <Input
-                value={username}
-                type="text"
-                placeholder=" Username"
-                onChange={(e) => setUsername(e.target.value)}
-                className=" text-xl text-white font-light bg-[#080808] rounded-lg mb-3"
-              />
-              <Input
-                value={password}
-                type="password"
-                placeholder=" Password"
-                onChange={(e) => setPassword(e.target.value)}
-                className="text-xl text-white font-light bg-[#080808] rounded-lg mb-3"
-              />
-              <div className="flex justify-between border-1 rounded-xl text-gray-400 mb-2">
-                <Input
-                  label={avatarBrowsed ? `${avatarLabel} ✓` : avatarLabel}
-                  type="file"
-                  accept="image/*"
-                  hidden
-                  disabled={loading}
-                  ref={avatarInputRef}
-                  onChange={(e) => handleFile(e, "avatar")}
-                  labelClass={
-                    avatarBrowsed
-                      ? `text-green-400 font-light text-sm m-2`
-                      : `text-white font-light text-sm m-2`
-                  }
-                />
-                <Button
-                  onClick={() => avatarInputRef.current.click()}
-                  disabled={loading}
-                  bgColor={loading ? `bg-gray-600` : `bg-red-600`}
-                  className={`text-xs rounded-xl`}
-                >
-                  Browse
-                </Button>
-              </div>
-              <div className="flex justify-between border-1 rounded-xl text-gray-400">
-                <Input
-                  label={
-                    coverImageBrowsed ? `${coverImageLabel} ✓` : coverImageLabel
-                  }
-                  type="file"
-                  accept="image/*"
-                  hidden
-                  disabled={loading}
-                  ref={coverImageInputRef}
-                  onChange={(e) => handleFile(e, "cover-image")}
-                  labelClass={
-                    coverImageBrowsed
-                      ? `text-green-400 font-light text-sm m-2`
-                      : `text-white font-light text-sm m-2`
-                  }
-                />
-                <Button
-                  onClick={() => coverImageInputRef.current.click()}
-                  disabled={loading}
-                  bgColor={loading ? `bg-gray-600` : `bg-red-600`}
-                  className="text-xs rounded-xl"
-                >
-                  Browse
-                </Button>
-              </div>
-              {error && (
-                <p className="text-red-500 font-light text-center">{error}</p>
-              )}
-              <div className="flex justify-center mt-4">
-                <Button
-                  type="submit"
-                  disabled={loading}
-                  className=" rounded-lg hover:bg-red-700 h-10 w-24 mt-2 p-0"
-                >
-                  {loading ? "Creating..." : "Signup"}
-                </Button>
-                <Link to='/login'>
-                  <Button
-                    disabled={loading}
-                    bgColor=""
-                    textColor="text-[#CCCCCC]"
-                    className="hover:text-red-600 mt-1"
-                  >
-                    Login
-                  </Button>
-                </Link>
-              </div>
-            </form>
+    <section className="auth-page pt-24">
+      <div className="auth-card fade-in-up max-w-xl p-7 sm:p-10">
+        <h1 className="display-title text-center text-5xl text-zinc-100">Create Account</h1>
+        <p className="mb-6 text-center text-sm tracking-wide text-zinc-400">
+          Start uploading and sharing your stream moments
+        </p>
+
+        <form className="space-y-3" onSubmit={handleSubmit}>
+          <Input
+            value={fullName}
+            type="text"
+            placeholder="Full Name"
+            onChange={(e) => setFullName(e.target.value)}
+          />
+          <Input
+            value={email}
+            type="email"
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            value={username}
+            type="text"
+            placeholder="Username"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <Input
+            value={password}
+            type="password"
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <div className="flex items-center justify-between rounded-xl border border-zinc-700/80 bg-zinc-900/70 px-3 py-2">
+            <Input
+              label={avatarBrowsed ? `${avatarLabel} (selected)` : avatarLabel}
+              type="file"
+              accept="image/*"
+              hidden
+              disabled={loading}
+              ref={avatarInputRef}
+              onChange={(e) => handleFile(e, "avatar")}
+              labelClass={avatarBrowsed ? `!m-0 text-emerald-300` : `!m-0 text-zinc-300`}
+            />
+            <Button
+              type="button"
+              onClick={() => avatarInputRef.current.click()}
+              disabled={loading}
+              variant="secondary"
+              className="px-3 py-1 text-xs"
+            >
+              Browse
+            </Button>
           </div>
-        </div>
+
+          <div className="flex items-center justify-between rounded-xl border border-zinc-700/80 bg-zinc-900/70 px-3 py-2">
+            <Input
+              label={
+                coverImageBrowsed ? `${coverImageLabel} (selected)` : coverImageLabel
+              }
+              type="file"
+              accept="image/*"
+              hidden
+              disabled={loading}
+              ref={coverImageInputRef}
+              onChange={(e) => handleFile(e, "cover-image")}
+              labelClass={coverImageBrowsed ? `!m-0 text-emerald-300` : `!m-0 text-zinc-300`}
+            />
+            <Button
+              type="button"
+              onClick={() => coverImageInputRef.current.click()}
+              disabled={loading}
+              variant="secondary"
+              className="px-3 py-1 text-xs"
+            >
+              Browse
+            </Button>
+          </div>
+
+          {error && (
+            <p className="rounded-lg border border-rose-500/40 bg-rose-950/35 px-3 py-2 text-center text-sm text-rose-300">{error}</p>
+          )}
+
+          <div className="mt-4 flex items-center justify-center gap-2">
+            <Button
+              type="submit"
+              disabled={loading}
+              className="min-w-28"
+            >
+              {loading ? "Creating..." : "Signup"}
+            </Button>
+            <Link to='/login'>
+              <Button
+                type="button"
+                disabled={loading}
+                variant="ghost"
+                className="border-zinc-600/70 text-zinc-300 hover:text-white"
+              >
+                Login
+              </Button>
+            </Link>
+          </div>
+        </form>
       </div>
-    </div>
+    </section>
   );
 }

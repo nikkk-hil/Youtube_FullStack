@@ -1,9 +1,12 @@
 import React from 'react'
-import { UploadComponent } from '../components/componentCollection'
+import { Header, UploadComponent } from '../components/componentCollection'
 
 function Upload() {
   return (
-    <UploadComponent />
+    <>
+      <Header authorized={true} />
+      <UploadComponent />
+    </>
   )
 }
 

@@ -42,58 +42,53 @@ export default function LoginComponent() {
   };
 
   return (
-    <div className="flex items-center justify-center bg-black h-170 w-full">
-      <div className="flex justify-between bg-[#121212] rounded-3xl shadow-lg shadow-red-800/50 h-3/4 w-2/3">
-        <div></div>
-        <div className="flex items-center justify-center w-1/2 p-4">
-          <div>
-            <h1 className="font-serif text-white text-3xl text-center">
-              Login Account
-            </h1>
-            <p className="text-gray-300 text-md font-light text-center tracking-wide mt-2 mb-4">
-              Enter your details
-            </p>
-            <form onSubmit={handleSubmit}>
-              <Input
-                value={email}
-                type="email"
-                placeholder=" Email"
-                onChange={(e) => setEmail(e.target.value)}
-                className=" text-xl text-white font-light bg-[#080808] rounded-lg mb-3"
-              />
-              <Input
-                value={password}
-                type="password"
-                placeholder=" Password"
-                onChange={(e) => setPassword(e.target.value)}
-                className="text-xl text-white font-light bg-[#080808] rounded-lg mb-3"
-              />
-              {error && (
-                <p className="text-red-500 font-light text-center">{error}</p>
-              )}
-              <div className="flex items-center justify-between">
-                <Button
-                  type="submit"
-                  disabled={loading}
-                  className=" rounded-lg hover:bg-red-700 h-10 w-24 mt-2 p-0"
-                >
-                  {loading ? "Logging..." : "Log In"}
-                </Button>
-                <Link to="/signup">
-                  <Button
-                    disabled={loading}
-                    bgColor=""
-                    textColor="text-[#CCCCCC]"
-                    className="hover:text-red-600 mt-1"
-                  >
-                    Create Account
-                  </Button>
-                </Link>
-              </div>
-            </form>
+    <section className="auth-page pt-24">
+      <div className="auth-card fade-in-up max-w-md p-8 sm:p-10">
+        <h1 className="display-title text-center text-5xl text-zinc-100">Welcome Back</h1>
+        <p className="mb-6 text-center text-sm tracking-wide text-zinc-400">
+          Continue to your video dashboard
+        </p>
+
+        <form className="space-y-3" onSubmit={handleSubmit}>
+          <Input
+            value={email}
+            type="email"
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            value={password}
+            type="password"
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          {error && (
+            <p className="rounded-lg border border-rose-500/40 bg-rose-950/35 px-3 py-2 text-center text-sm text-rose-300">{error}</p>
+          )}
+
+          <div className="mt-4 flex items-center justify-between gap-2">
+            <Button
+              type="submit"
+              disabled={loading}
+              className="min-w-28"
+            >
+              {loading ? "Logging..." : "Log In"}
+            </Button>
+
+            <Link to="/signup">
+              <Button
+                type="button"
+                disabled={loading}
+                variant="ghost"
+                className="border-zinc-600/70 text-zinc-300 hover:text-white"
+              >
+                Create Account
+              </Button>
+            </Link>
           </div>
-        </div>
+        </form>
       </div>
-    </div>
+    </section>
   )
 }

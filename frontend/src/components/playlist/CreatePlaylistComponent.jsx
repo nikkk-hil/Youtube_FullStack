@@ -35,44 +35,37 @@ function CreatePlaylistComponent() {
     }
 
   return (
-    <div className="flex items-center justify-center bg-black h-170 w-full">
-      <div className="flex justify-between bg-[#121212] rounded-3xl shadow-lg shadow-red-800/50 h-3/4 w-2/3">
-        <div></div>
-        <div className="flex items-center justify-center w-1/2 p-4">
-          <div>
-            <h1 className="font-serif text-white text-3xl mb-6 text-center">
-              Create Playlist
-            </h1>
-            <form onSubmit={handleSubmit}>
-              <Input
-                value={title}
-                placeholder=" Enter a title for your playlist"
-                onChange={(e) => setTitle(e.target.value)}
-                className="w-full text-xl text-white font-light bg-[#080808] rounded-lg mb-3"
-              />
-              <Input
-                value={description}
-                placeholder=" Enter a description"
-                onChange={(e) => setDescription(e.target.value)}
-                className="w-full text-xl text-white font-light bg-[#080808] rounded-lg mb-3"
-              />
-              {error && (
-                <p className="text-red-500 font-light text-center">{error}</p>
-              )}
-              <div className="flex items-center justify-between">
-                <Button
-                  type="submit"
-                  disabled={creating}
-                  className=" rounded-lg hover:bg-red-700 h-10 w-24 mt-2 p-0"
-                >
-                  {creating ? "Creating..." : "Create"}
-                </Button>
-              </div>
-            </form>
+    <section className="auth-page pt-24">
+      <div className="auth-card fade-in-up max-w-lg p-7 sm:p-10">
+        <h1 className="display-title mb-6 text-center text-5xl text-zinc-100">
+          Create Playlist
+        </h1>
+        <form className="space-y-3" onSubmit={handleSubmit}>
+          <Input
+            value={title}
+            placeholder="Enter a title for your playlist"
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <Input
+            value={description}
+            placeholder="Enter a description"
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          {error && (
+            <p className="rounded-lg border border-rose-500/40 bg-rose-950/35 px-3 py-2 text-center text-sm text-rose-300">{error}</p>
+          )}
+          <div className="flex items-center justify-center">
+            <Button
+              type="submit"
+              disabled={creating}
+              className="min-w-28"
+            >
+              {creating ? "Creating..." : "Create"}
+            </Button>
           </div>
-        </div>
+        </form>
       </div>
-    </div>
+    </section>
   )
 }
 
