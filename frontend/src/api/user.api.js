@@ -6,7 +6,7 @@ const userLogout = () => api.post("/user/logout");
 const refreshAccessToken = () => api.post("/user/refresh-access-token");
 const changePassword = (data) => api.post("/user/change-password", data);
 const editUserDetails = (data) => api.patch("/user/edit-user-details", data);
-const getUser = () => api.get("/user/get-user");
+const getUser = () => api.get("/user/get-user", {timeout: 5000});
 const changeAvatar = (avatar) => api.patch("/user/update-avatar", avatar);
 const changeCoverImage = (coverImg) => api.patch("/user/update-coverImage", coverImg);
 const getUserChannelProfile = (username) => api.get(`/user/c/${username}`);
